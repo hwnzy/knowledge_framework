@@ -1,4 +1,4 @@
-# MVC和MVT解读
+# MVC和MVT
 
 ## MVC解读
 

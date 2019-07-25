@@ -1,2 +1,2 @@
-# Django面试须知
+# Django
 
