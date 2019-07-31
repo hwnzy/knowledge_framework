@@ -2,7 +2,7 @@
 
 dict 是无序的，如果想输出顺序和操作顺序一致, 需要使用有序字典
 
-```text
+```python
 from collections import OrderedDict
 
 # 创建有序字典

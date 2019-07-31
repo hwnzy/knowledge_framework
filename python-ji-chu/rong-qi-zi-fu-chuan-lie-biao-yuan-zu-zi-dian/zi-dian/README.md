@@ -1,7 +1,5 @@
 # 字典
 
-字典
-
 ```python
 info = {'name':'hwnzy', 'id':1, 'sex':'man', 'address':'北京'}
 info['name']  # 根据键访问值，访问不存在的键抛出KeyError
