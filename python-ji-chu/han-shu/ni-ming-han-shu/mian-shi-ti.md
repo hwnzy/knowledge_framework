@@ -1,4 +1,4 @@
-# Lambda
+# 面试题
 
 ## 什么是 lambda 函数？ 有什么好处？
 
@@ -36,6 +36,4 @@ def multipliers():
 def multipliers():
     return [lambda x， i=i : i * x for i in range(4)]
 ```
-
-
 

@@ -1,4 +1,4 @@
-# 字典面试题
+# 面试题
 
 ## 现有字典 d={‘a’ :24，‘g’ :52，‘i’ :12，‘k’ :33}请按字典中的 value 值进行排序？
 
@@ -20,5 +20,23 @@
 
 `d = {key: value for (key, value) in iterable}`
 
+## 将字符串"k:1\|k1:2\|k2:3\|k3:4"，处理成 Python 字典：{k:1, k1:2, ... } \# 字典里的 K 作为字符串处理
 
+```python
+str1 = "k:1|k1:2|k2:3|k3:4"
+def str2dict(str1):
+    dict1 = {}
+    for iterms in str1.split('|'):
+        key, value = iterms.split(':')
+        dict1[key] = value
+    return dict1
+```
+
+## 请按 alist 中元素的 age 由大到小排序
+
+```python
+alist [{'name':'a'，'age':20}，{'name':'b'，'age':30}，{'name':'c'，'age':25}]
+def sort_by_age(list1):
+    return sorted(alist，key=lambda x:x['age']，reverse=True)
+```
 

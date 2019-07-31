@@ -1,56 +1,37 @@
 # 多态
 
-#### 什么是多态? <a id="&#x4EC0;&#x4E48;&#x662F;&#x591A;&#x6001;"></a>
-
-在需要使用父类对象的地方,也可以使用子类对象, 这种情况就叫多态.
-
-比如, 在函数中,我需要调用 某一个父类对象的方法, 那么我们也可以在这个地方调用子类对象的方法.
+在需要使用父类对象的地方也可以使用子类对象，这种情况就叫多态.
 
 #### 如何在程序中使用多态? <a id="&#x5982;&#x4F55;&#x5728;&#x7A0B;&#x5E8F;&#x4E2D;&#x4F7F;&#x7528;&#x591A;&#x6001;"></a>
 
-```text
+```python
+'''
 可以按照以下几个步骤来写代码:
     1.子类继承父类
     2.子类重写父类中的方法
     3.通过对象调用这个方法
+'''
+class Father:
+    def cure(self):
+        print("父亲给病人治病...")
+
+class Son(Father):
+    # 重写父类中的方法
+    def cure(self):
+        print("儿子给病人治病...")
+
+def call_cure(doctor):
+    doctor.cure()
+
+father = Father()
+call_cure(father)
+son = Son()
+call_cure(son)
 ```
 
-* 示例代码
-
-```text
-    # 定义父类
-    class Father:
-        def cure(self):
-            print("父亲给病人治病...")
 
 
-    # 定义子类继承父类
-    class Son(Father):
-        # 重写父类中的方法
-        def cure(self):
-            print("儿子给病人治病...")
+### 使用多态的好处
 
-
-    # 定义函数,在里面 调用 医生的cure函数
-    def call_cure(doctor):
-
-        # 调用医生治病的方法
-        doctor.cure()
-
-
-    # 创建父类对象
-    father = Father()
-    # 调用函数,把父类对象传递函数
-    call_cure(father)
-
-
-    # 创建子类对象
-    son = Son()
-    # 调用函数,把子类对象传递函数
-    call_cure(son)
-```
-
-#### 使用多态的好处 <a id="&#x4F7F;&#x7528;&#x591A;&#x6001;&#x7684;&#x597D;&#x5904;"></a>
-
-给call\_cure\(doctor\)函数传递哪个对象,在它里面就会调用哪个对象的cure\(\)方法,也就是说在它里面既可以调用son对象的cure\(\)方法,也能调用father对象的cure\(\)方法,当然了也可以在它里面调用Father类其它子类对象的cure\(\)方法,这样可以让call\_cure\(doctor\)函数变得更加灵活,额外增加了它的功能,提高了它的扩展性.
+> 给call\_cure\(doctor\)函数传递哪个对象，在它里面就会调用哪个对象的cure\(\)方法，让call\_cure\(doctor\)函数变得更加灵活，额外增加了它的功能，提高了它的扩展性。
 

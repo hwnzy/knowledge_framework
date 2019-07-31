@@ -1,4 +1,4 @@
-# 5.模块与包
+# 面试题
 
 ## 常用的 Python 标准库都有哪些？
 
@@ -113,6 +113,4 @@ unittest 是Python中的单元测试框架。它拥有支持`共享搭建`、`�
 ## Python 中有日志吗?怎么使用?
 
 Python 自带`logging`模块，调用 `logging.basicConfig()`方法配置需要的日志等级和相应的参数， Python 解释器会按照配置的参数生成相应的日志。
-
-
 
