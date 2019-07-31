@@ -10,7 +10,7 @@
 
 变量
 
-![&#x53D8;&#x91CF;&#x53CA;&#x5176;&#x7C7B;&#x578B;](../../.gitbook/assets/image%20%2811%29.png)
+![&#x53D8;&#x91CF;&#x53CA;&#x5176;&#x7C7B;&#x578B;](../../.gitbook/assets/image%20%2838%29.png)
 
 关键字
 

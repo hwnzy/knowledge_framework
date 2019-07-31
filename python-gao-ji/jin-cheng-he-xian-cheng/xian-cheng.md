@@ -76,5 +76,14 @@ if __name__ == '__main__':
 1. threading.Thread\(daemon=True\)
 2. sub\_thread.setDaemon\(True\)
 
+#### 互斥锁
+
+```python
+mutex = threading.Lock()  # 创建锁
+mutex.acquire()  # 上锁
+...这里编写代码能保证同一时刻只能有一个线程去操作, 对共享数据进行锁定...
+mutex.release()  # 释放锁
+```
+
 
 

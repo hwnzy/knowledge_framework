@@ -1,6 +1,6 @@
-# HTTP
+# 面试题
 
-说说 HTTP 和 HTTPS 区别？
+## 说说 HTTP 和 HTTPS 区别？
 
 HTTP 协议传输的数据都是未加密的，也就是明文的，因此使用 HTTP 协议传输隐私信息非常不安 全，为了保证这些隐私数据能加密传输，于是网景公司设计了 SSL（Secure Sockets Layer）协议用于 对 HTTP 协议传输的数据进行加密，从而就诞生了 HTTPS。简单来说，HTTPS 协议是由 SSL+HTTP 协 议构建的可进行加密传输、身份认证的网络协议，要比 http 协议安全。
 
@@ -12,7 +12,7 @@ HTTPS 和 HTTP 的区别主要如下：
 
 4、 http 的连接很简单，是无状态的；HTTPS 协议是由 SSL+HTTP 协议构建的可进行加密传输、 身份认证的网络协议，比 http 协议安全。
 
-谈一下 HTTP 协议以及协议头部中表示数据类型的字段？
+## 谈一下 HTTP 协议以及协议头部中表示数据类型的字段？
 
 HTTP 协议是 Hyper Text Transfer Protocol（超文本传输协议）的缩写，是用于从万维网 （WWW:World Wide Web）服务器传输超文本到本地浏览器的传送协议。
 
@@ -22,7 +22,7 @@ HTTP 是一个属于应用层的面向对象的协议，由于其简捷、快速
 
 HTTP 协议工作于客户端-服务端架构为上。浏览器作为 HTTP 客户端通过 URL 向 HTTP 服 务端即 WEB 服务器发送所有请求。 Web 服务器根据接收到的请求后，向客户端发送响应信息。 表示数据类型字段： Content-Type
 
-HTTP 请求方法都有什么？
+## HTTP 请求方法都有什么？
 
 根据 HTTP 标准，HTTP 请求可以使用多种请求方法。 
 
@@ -46,7 +46,7 @@ HTTP1.1 新增了五种请求方法：OPTIONS， PUT， DELETE， TRACE 和 CONN
 
 8、 TRACE 回显服务器收到的请求，主要用于测试或诊断。
 
-HTTP 常见请求头？
+## HTTP 常见请求头？
 
 1. Host \(主机和端口号\)
 2. Connection \(链接类型\)
@@ -57,8 +57,6 @@ HTTP 常见请求头？
 7. Accept-Encoding（文件编解码格式）
 8. Cookie （Cookie）
 9. x-requested-with :XMLHttpRequest \(是 Ajax 异步请求\)
-
-
 
 
 
