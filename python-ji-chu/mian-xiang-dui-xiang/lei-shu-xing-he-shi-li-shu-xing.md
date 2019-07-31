@@ -2,21 +2,22 @@
 
 ### 类属性
 
-```text
+```python
 class People(object):
     name = 'Tom'  # 公有的类属性
     __age = 12  # 私有的类属性
+People.name  #类属性
 ```
 
 ### 实例属性\(对象属性\)
 
-```text
+```python
 class People(object):
     name = 'Tom'  # 公有的类属性
     __age = 12  # 私有的类属性
 
 p = People()
-p.name = 12  # 实例属性
+p.name  # 实例属性
 ```
 
 ### 通过实例\(对象\)去修改类属性
