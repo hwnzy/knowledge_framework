@@ -4,7 +4,7 @@
 
 当Python检测错误，解释器无法继续执行，出现错误提示，这就是异常
 
-```text
+```python
 try:
     open('1.txt','r') # 把可能出现问题的代码，放在try中
 except Exception as result:  # 捕获所有异常，并且存储异常的基本信息
