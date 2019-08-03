@@ -5,7 +5,7 @@
 1. GET 方式的请求报文
 2. POST 方式的请求报文
 
-![GET&#x548C;POST&#x8BF7;&#x6C42;&#x5BF9;&#x6BD4;&#x6548;&#x679C;&#x56FE;](../../../.gitbook/assets/image%20%2852%29.png)
+![GET&#x548C;POST&#x8BF7;&#x6C42;&#x5BF9;&#x6BD4;&#x6548;&#x679C;&#x56FE;](../../../.gitbook/assets/image%20%2853%29.png)
 
 #### HTTP响应报文 <a id="1-http&#x54CD;&#x5E94;&#x62A5;&#x6587;&#x5206;&#x6790;"></a>
 

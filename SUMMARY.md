@@ -1,6 +1,8 @@
 # Table of contents
 
 * [WEB知识点集合](README.md)
+* [Git](git/README.md)
+  * [基本使用](git/ji-ben-shi-yong.md)
 * [一些小知识](yi-xie-xiao-zhi-shi/README.md)
   * [MarkDown数学公式](yi-xie-xiao-zhi-shi/markdown-shu-xue-gong-shi.md)
 * [算法与数据结构](suan-fa-yu-shu-ju-jie-gou/README.md)
@@ -18,7 +20,7 @@
     * [B+树](suan-fa-yu-shu-ju-jie-gou/er-cha-shu/b+-shu.md)
   * [线性表](suan-fa-yu-shu-ju-jie-gou/xian-xing-biao/README.md)
     * [栈](suan-fa-yu-shu-ju-jie-gou/xian-xing-biao/zhan.md)
-    * [列表](suan-fa-yu-shu-ju-jie-gou/xian-xing-biao/lie-biao-de-lian-biao.md)
+    * [队列](suan-fa-yu-shu-ju-jie-gou/xian-xing-biao/lie-biao-de-lian-biao.md)
     * [顺序表](suan-fa-yu-shu-ju-jie-gou/xian-xing-biao/shun-xu-biao.md)
     * [链表](suan-fa-yu-shu-ju-jie-gou/xian-xing-biao/lian-biao/README.md)
       * [单链表](suan-fa-yu-shu-ju-jie-gou/xian-xing-biao/lian-biao/dan-lian-biao.md)

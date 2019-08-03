@@ -10,7 +10,7 @@
  HTTP是一种无状态的协议。HTTP协议自身不对请求和响应之间的通信状态进行保存。也就是说HTTP这个级别，协议对于发送过的请求和响应都不做持久化的处理。  
 
 
-![](../../../.gitbook/assets/image%20%2844%29.png)
+![](../../../.gitbook/assets/image%20%2845%29.png)
 
 **为什么要这么做？**  
  这是为了更快的处理大量的事务，确保协议的可伸缩性。而特意把HTTP设计得这么简单的。
@@ -68,7 +68,7 @@ CONNECT方法的格式如下：
 **什么是持久连接**  
  持久连接也被称为HTTP keep alive或者HTTP connection reuse。它的特点是，只要任意一端没有明确提出断开连接，则保持TCP连接状态。
 
-![](../../../.gitbook/assets/image%20%2855%29.png)
+![](../../../.gitbook/assets/image%20%2856%29.png)
 
 这样做的好处：
 
@@ -102,7 +102,7 @@ Cookie的工作原理：Cookie会根据从服务端发送的响应报文中的�
 
 上面两次请求的请求和响应报文如下所示：
 
-![](../../../.gitbook/assets/image%20%2841%29.png)
+![](../../../.gitbook/assets/image%20%2842%29.png)
 
 
 

@@ -1,31 +1,33 @@
 # 栈
 
-栈的顺序表实现
-
 ```python
-class SStack():  # 基于顺序表技术实现的栈类
+class Stack:
+    """Stack implementation as a list"""
+
     def __init__(self):
-        self._elems = []
-    
+        """Create new stack"""
+        self._items = []
+
     def is_empty(self):
-        return self._elems == []
-    
-    def top(self):
-        if self._elems == []:
-            raise StackUnderflow("in SStack.top()")
-        return self._elems[-1]
-    
-    def push(self, elem):
-        self._elems.append(elem)
-    
+        """Check if the stack is empty"""
+        return not bool(self._items)
+
+    def push(self, item):
+        """Add an item to the stack"""
+        self._items.append(item)
+
     def pop(self):
-        if self._elems == []:
-            raise StackUnderflow("in SStack.pop()")
-        return self._elems.pop()
-        
-class StackUnderflow(Exception):
-    def __init__(self, *args, **kwargs):
-        pass
+        """Remove an item from the stack"""
+        return self._items.pop()
+
+    def peek(self):
+        """Get the value of the top item in the stack"""
+        return self._items[-1]
+
+    def size(self):
+        """Get the number of items in the stack"""
+        return len(self._items)
+
 ```
 
 

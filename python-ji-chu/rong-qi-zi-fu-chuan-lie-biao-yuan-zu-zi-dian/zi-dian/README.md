@@ -18,7 +18,7 @@ info.get('age', 24)  # 设置默认值，若info中不存在'age'这个键，就
 
 常见操作
 
-```text
+```python
 dict = {"name": 'hwnzy', 'sex': 'man'}
 len(dict)  # 2 测量字典中，键值对的个数
 dict.keys()  # 测量字典中，键值对的个数 ['name', 'sex']

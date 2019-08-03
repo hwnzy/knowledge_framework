@@ -1,41 +1,28 @@
-# 列表
+# 队列
 
 ```python
-# importing "collections" for deque operations
-import collections
- 
-# initializing deque
-de = collections.deque([1, 2, 3,])
- 
-# using extend() to add numbers to right end 
-# adds 4,5,6 to right end
-de.extend([4,5,6])
- 
-# printing modified deque
-print ("The deque after extending deque at end is : ")
-print (de)  # deque([1, 2, 3, 4, 5, 6])
- 
-# using extendleft() to add numbers to left end 
-# adds 7,8,9 to right end
-de.extendleft([7,8,9])
- 
-# printing modified deque
-print ("The deque after extending deque at beginning is : ")
-print (de)  # deque([9, 8, 7, 1, 2, 3, 4, 5, 6])
- 
-# using rotate() to rotate the deque
-# rotates by 3 to left
-de.rotate(-3)
- 
-# printing modified deque
-print ("The deque after rotating deque is : ")
-print (de)  # deque([4, 5, 6, 9, 8, 7, 1, 2, 3])
- 
-# using reverse() to reverse the deque
-de.reverse()
- 
-# printing modified deque
-print ("The deque after reversing deque is : ")
-print (de)  # deque([3, 2, 1, 7, 8, 9, 6, 5, 4])
+class Queue:
+    """Queue implementation as a list"""
+
+    def __init__(self):
+        """Create new queue"""
+        self._items = []
+
+    def is_empty(self):
+        """Check if the queue is empty"""
+        return not bool(self._items)
+
+    def enqueue(self, item):
+        """Add an item to the queue"""
+        self._items.insert(0, item)
+
+    def dequeue(self):
+        """Remove an item from the queue"""
+        return self._items.pop()
+
+    def size(self):
+        """Get the number of items in the queue"""
+        return len(self._items)
+
 ```
 
