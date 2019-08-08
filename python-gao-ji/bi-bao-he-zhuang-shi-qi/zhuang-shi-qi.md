@@ -14,7 +14,7 @@ def wrapper(func):
   
  @wrapper
  def func(*args, **kwargs):
-   return a + b
+   return args[0] + args[1]
 ```
 
 ### 使用多个装饰器
@@ -47,9 +47,9 @@ def wapper(flag):
     def decorator(func):
         def inner(num1, num2):
             if flag == "+":
-                print("--正在努力加法计算--")
+                print("--加法--")
             elif flag == "-":
-                print("--正在努力减法计算--")
+                print("--减法--")
             result = func(num1, num2)
             return result
         return inner

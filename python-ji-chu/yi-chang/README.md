@@ -6,7 +6,7 @@
 
 ```python
 try:
-    open('1.txt','r') # 把可能出现问题的代码，放在try中
+    f = open('1.txt','r') # 把可能出现问题的代码，放在try中
 except Exception as result:  # 捕获所有异常，并且存储异常的基本信息
     print(result) # 把处理异常的代码，放在except中   
 else:  # 即如果没有捕获到异常，那么就执行else中的事情

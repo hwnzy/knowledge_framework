@@ -21,15 +21,17 @@ b = a
 
 * **浅拷贝\(shallow copy\)**
 
-浅拷贝会创建新对象，其内容非原对象本身的引用，而是原对象内第一层对象的引用。 浅拷贝有三种形式:切片操作、工厂函数、 copy 模块中的 copy 函数。 
+浅拷贝会创建新对象，其内容非原对象本身的引用，而是原对象内第一层对象的引用。 
 
-切片操作：`b = a[:]` 或者 `b = [x for x in a]`
+浅拷贝有三种形式:切片操作、工厂函数、 copy 模块中的 copy 函数。 
 
-工厂函数：`b = list(a)`
+**切片操作**：`b = a[:]` 或者 `b = [x for x in a]`
 
-copy 函数：`b = copy.copy(a)`
+**工厂函数**：`b = list(a)`
 
-列表 b 列表 a 使用 is 判断可以发现他们不是同一个对象，使用 id 查看也不指向同一片内存空间。但当我们使用 `id(x) for x in a` 和 `id(x) for x in b` 查看 a 和 b 中元素地址，可以看到二者包含的元素的地址是相同的。 
+**copy 函数**：`b = copy.copy(a)`
+
+列表 b 列表 a 使用 is 判断可以发现他们不是同一个对象，使用 id 查看也不指向同一片内存空间。**但当我们使用 `id(x) for x in a` 和 `id(x) for x in b` 查看 a 和 b 中元素地址，可以看到二者包含的元素的地址是相同的。** 
 
 **但是要注意的是**，浅拷贝只拷贝了一层，列表 a 中嵌套的 list，修改了它情况就不一样。 比如：`a[3].append('java')`。查看列表 b会发现列表 b 也发生了变化。
 
@@ -69,8 +71,8 @@ def dayofyear():
     year = input("请输入年份：")
     month = input("请输入月份：")
     day = input("请输入天：")
-    date1 = datetime.date(year=int(year)，month=int(month)，day=int(day))
-    date2 = datetime.date(year=int(year)，month=1，day=1)
+    date1 = datetime.date(year=int(year), month=int(month), day=int(day))
+    date2 = datetime.date(year=int(year), month=1, day=1)
     return (date1 - date2 + 1).day
 ```
 
@@ -89,13 +91,13 @@ random.shuffle(alist)
 
 ## Python 中的 os 模块常见方法？
 
-os.remove\(\)删除文件 
+`os.remove()`删除文件 
 
-os.rename\(\)重命名文件 
+`os.rename()`重命名文件 
 
-os.path.join\(\)将分离的各部分组合成一个路径名
+`os.path.join()`将分离的各部分组合成一个路径名
 
-os.path.exists\(\)是否存在
+`os.path.exists()`是否存在
 
 ## Python 的 sys 模块常用方法？
 
@@ -108,7 +110,7 @@ os.path.exists\(\)是否存在
 
 ## unittest 是什么？
 
-unittest 是Python中的单元测试框架。它拥有支持`共享搭建`、`自动测试`、`在测试中暂停代码`、`将不同测试迭代成一组`等功能。
+unittest 是Python中的**单元测试框架**。它拥有支持`共享搭建`、`自动测试`、`在测试中暂停代码`、`将不同测试迭代成一组`等功能。
 
 ## Python 中有日志吗?怎么使用?
 

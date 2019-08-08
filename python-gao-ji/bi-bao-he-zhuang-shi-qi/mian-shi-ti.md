@@ -9,9 +9,10 @@ import time
 def timeit(func):
     def wrapper():
         start = time.clock()
-        func() end =time.clock()
+        func()  # 把函数包裹在功能里面
+        end = time.clock()
         print 'used:', end - start
-        return wrapper
+    return wrapper
 @timeit
 def foo():
 print 'in foo()'foo()
@@ -19,11 +20,38 @@ print 'in foo()'foo()
 
 ## 解释一下什么是闭包?
 
-在函数内部再定义一个函数，并且这个函数用到了外边函数的变量，那么将这个函数以及用到的一些变量称之为 闭包。
+1. 函数嵌套
+2. 内部函数使用外部函数的变量（包括外部函数参数）
+3. 外部函数返回内部函数
+
+这个函数以及用到的一些变量称之为闭包。
 
 ## 函数装饰器有什么作用？
 
-装饰器本质上是一个 Python 函数，它可以在让其他函数在不需要做任何代码的变动的前提下增加额外的功能。 装 饰器的返回值也是一个函数的对象，它经常用于有切面需求的场景。 
+装饰器本质上是一个 Python 函数，它可以在让其他函数在**不需要做任何代码的变动的前提下**增加**额外的功能**。 装饰器的返回值也是一个函数的对象，它经常用于有特殊需求的场景。 
 
-比如：插入日志、性能测试、事务处理、缓存、 权限的校验等场景 有了装饰器就可以抽离出大量的与函数功能本身无关的雷同代码并发并继续使用。
+插入日志、性能测试、事务处理、缓存、 权限的校验等场景 有了装饰器就可以抽离出大量的与函数功能本身无关的雷同代码并发并继续使用。
+
+```python
+# 插入日志
+def trace_func(func):  
+    def tmp(*args, **kargs):  
+        print 'Start %s(%s, %s)...' % (func.__name__, args, kargs)  
+        return func(*args, **kargs)  
+    return tmp  
+```
+
+```python
+# 性能测试
+from cProfile import Profile
+def profile_wrapper(func):
+    def wrapper(*args, **kwargs):
+        prof = Profile()
+        prof.enable()
+        func(*args, **kwargs)
+        prof.create_stats()
+        prof.print_stats()
+
+    return wrapper
+```
 

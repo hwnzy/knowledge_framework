@@ -20,9 +20,9 @@ import modname as rename  # 重命名，为了方便用短名字替换模块名�
 
 * 包将有联系的模块组织在同一个文件夹下，并在该文件夹下创建名字为`__init__.py` 文件
 
-`__init__.py` 控制着包的导入行为
+#### `__init__.py` 控制着包的导入行为
 
 * `__init__.py`为空：仅仅是把这个包导入，不会导入包中的模块
-* `__init__.py`中定义一个`__all__`变量，它控制着 from 包名 import \*时导入的模块，`__all__ =  ['className', 'function_name']`
+* `__init__.py`中定义一个`__all__`变量，它控制着 from 包名 import \*时导入的模块，如：`__all__ =  ['className', 'function_name']`
 * `__init__.py`中编写内容，当导入时这些语句就会被执行
 

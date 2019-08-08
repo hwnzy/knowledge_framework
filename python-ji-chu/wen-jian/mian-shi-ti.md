@@ -41,7 +41,7 @@ readline：读取下一行，使用生成器方法
 
 readlines：读取整个文件到一个迭代器以供我们遍历
 
-补充缺失的代码？
+## 补充缺失的代码？
 
 ```python
 def print_directory_contents(sPath):

@@ -7,11 +7,11 @@ class Person(object):
     def __init__(self):
         self.__age = 0
 
-    @property
+    @property  # 读取age
     def age(self):
         return self.__age
 
-    @age.setter
+    @age.setter  # 设置age
     def age(self, new_age):
         if new_age >= 120:
             print("too old")
