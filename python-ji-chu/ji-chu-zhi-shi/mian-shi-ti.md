@@ -26,7 +26,7 @@ Python 是`强类型`的`动态脚本语言`。
 
 ## 代码中要修改不可变数据会出现什么问题? 抛出什么异常?
 
-> 代码不会正常运行，抛出 TypeError 异常
+代码不会正常运行，抛出 TypeError 异常
 
 ## a=1,b=2,不用中间变量交换 a 和 b 的值？
 
@@ -54,7 +54,7 @@ a, b = b, a
 
 ## print 调用 Python 中底层的什么方法?
 
-> print 方法默认调用 sys.stdout.write 方法，即往控制台打印字符串
+print 方法默认调用 sys.stdout.write 方法，即往控制台打印字符串
 
 ## 下面这段代码的输出结果将是什么？请解释？
 
@@ -65,20 +65,20 @@ class Child1(Parent):
     pass
 class Child2(Parent):
     pass
-print Parent.x, Child1.x, Child2.x
+print(Parent.x, Child1.x, Child2.x)
 Child1.x = 2
-print parent.x, Child1.x, Child2.x
-parent.x = 3
-print Parent.x, Child1.x, Child2.
+print(Parent.x, Child1.x, Child2.x)
+Parent.x = 3
+print(Parent.x, Child1.x, Child2.x)
 ```
 
-1.  继承自父类的类属性x，所以都一样，指向同一块内存地址
+1. 继承自父类的类属性x，所以都一样，指向同一块内存地址
 2. 更改Child1，Child1的x指向了新的内存地址
-3. 更改Parent，Parent的x指向了新的内存地址
+3. 更改Parent，Parent和Child2的x指向了新的内存地址
 
 ##  简述你对 input\(\)函数的理解？
 
-> 在 Python3 中，input\(\)获取用户输入，不论用户输入的是什么，获取到的都是字符串类型的。
->
->  在 Python2 中有 raw\_input\(\)和 input\(\), raw\_input\(\)和 Python3 中的 input\(\)作用是一样的， input\(\)输入的是什么数据类型的，获取到的就是什么数据类型的。
+在 Python3 中，input\(\)获取用户输入，不论用户输入的是什么，获取到的都是字符串类型的。
+
+在 Python2 中有 raw\_input\(\)和 input\(\), raw\_input\(\)和 Python3 中的 input\(\)作用是一样的， input\(\)输入的是什么数据类型的，获取到的就是什么数据类型的。
 

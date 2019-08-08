@@ -18,7 +18,7 @@ class A(object):
 # 子类
 class B(A):
     pass
-b = B()  # 创建子列实例对象
+b = B()  # 创建子类实例对象
 b.num  # 子类对象可以直接使用父类属性
 b.show_num()  # 子类对象可以直接使用父类的方法
 ```

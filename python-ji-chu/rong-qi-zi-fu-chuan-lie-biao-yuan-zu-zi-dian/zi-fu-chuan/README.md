@@ -1,6 +1,6 @@
 # 字符串
 
-字符串
+### 字符串
 
 ```python
 # 单引号或者双引号或者三引号中的数据，就是字符串
@@ -13,7 +13,7 @@ c = f'{a}, 1+1={1+1}, {{a}}'  # 'hello, 1+1=2, {a}'
 c = F'{a}, 1+1={1+1}, {{a}}'
 ```
 
-字符串常见操作
+### 字符串常见操作
 
 ```python
 mystr = ' hello world '
@@ -54,13 +54,13 @@ mystr.partition(str)
 # rpartition()类似于 partition()函数,不过是从右边开始
 mystr.rpartition(str)
 # 按照行分隔，返回一个包含各行作为元素的列表
-mystr.splitlines()  
+mystr.splitlines()
 # 如果 mystr 所有字符都是字母 则返回 True,否则返回 False
-mystr.isalpha()  
+mystr.isalpha()
 # 如果 mystr 只包含数字则返回 True 否则返回 False
 mystr.isdigit()
 # 如果 mystr 所有字符都是字母或数字则返回 True,否则返回 False
-mystr.isalnum()  
+mystr.isalnum()
 # 如果 mystr 中只包含空格，则返回 True，否则返回 False
 mystr.isspace()
 # mystr中每个元素后面插入str,构造出一个新的字符串

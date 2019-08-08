@@ -1,13 +1,13 @@
 # 基本语句
 
-if
+### if
 
 ```text
     if 要判断的条件:
         条件成立时，要做的事情
 ```
 
-if-else
+### if-else
 
 ```text
     if 条件:
@@ -16,7 +16,7 @@ if-else
         不满足条件时要做的事情
 ```
 
-if...elif...else...
+### if...elif...else...
 
 ```text
     if xxx1:
@@ -27,13 +27,13 @@ if...elif...else...
         事情3
 ```
 
-if 实现三目运算操作
+### if 实现三目运算操作
 
 ```text
 a if a > b else b  # 如果 a > b的条件成立,三目运算的结果是a,否则就是b
 ```
 
-while
+### while
 
 ```text
     while 条件:
@@ -43,7 +43,7 @@ while
         ...(省略)...
 ```
 
-for
+### for
 
 ```text
 for 临时变量 in 列表或者字符串等可迭代对象:
@@ -51,7 +51,7 @@ for 临时变量 in 列表或者字符串等可迭代对象:
     
 ```
 
-break和continue
+### break和continue
 
 ```text
     if 条件1:

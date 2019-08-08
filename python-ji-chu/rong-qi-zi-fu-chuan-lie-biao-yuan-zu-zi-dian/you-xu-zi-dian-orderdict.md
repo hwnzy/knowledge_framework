@@ -17,13 +17,13 @@ print(my_dict)
 
 输出结果
 
-```text
+```python
 OrderedDict([('one', 1), ('two', 2), ('three', 3), ('four', 4)])
 ```
 
-在 Python3.6 版本中, dict 字典已经经过优化, 变为有序字典. 并且字典所占用的内存占用减少了20％到25％
+在 Python3.6 版本中, dict 字典已经经过优化, 变为有序字典. 并且字典的内存占用减少了20％到25％
 
-```text
+```python
 # 创建无序字典
 my_dict = dict()
 # 向字典中添加元素
@@ -36,7 +36,7 @@ print(my_dict)
 
 输出结果
 
-```text
+```python
 {'one': 1, 'two': 2, 'three': 3, 'four': 4}
 ```
 
