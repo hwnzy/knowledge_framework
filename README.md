@@ -1,7 +1,5 @@
 # Python工程师知识框架
 
-
-
 ## Getting Super Powers
 
 Becoming a super hero is a fairly straight forward process:

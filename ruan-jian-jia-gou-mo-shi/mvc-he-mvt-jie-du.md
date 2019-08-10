@@ -8,7 +8,7 @@
 
 ## MVC示意图
 
-![MVC&#x793A;&#x610F;&#x56FE;](../.gitbook/assets/image%20%2814%29.png)
+![MVC&#x793A;&#x610F;&#x56FE;](../.gitbook/assets/image%20%2815%29.png)
 
 1. 用户点击注册按钮，将要注册的信息发送给网站服务器
 2. Controller控制器接收到用户的注册信息，Controller会告诉Model层将用户的注册信息保存到数据库
@@ -28,7 +28,7 @@
 
 ## MVT示意图
 
-![MVT&#x793A;&#x610F;&#x56FE;](../.gitbook/assets/image%20%2812%29.png)
+![MVT&#x793A;&#x610F;&#x56FE;](../.gitbook/assets/image%20%2813%29.png)
 
 1. 用户点击注册按钮，将要注册的内容发送给网站服务器
 2. View视图，接收到用户的注册数据，View告诉Model将用户的注册信息保存到数据库

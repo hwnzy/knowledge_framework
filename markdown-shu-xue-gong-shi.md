@@ -146,10 +146,3 @@ $$
 | `$\sigma$` | ![\sigma](https://math.jianshu.com/math?formula=%5Csigma) | `$\xi$` | ![\xi](https://math.jianshu.com/math?formula=%5Cxi) |
 | `$\mu$` | ![\mu](https://math.jianshu.com/math?formula=%5Cmu) | `$\partial$` | ![\partial](https://math.jianshu.com/math?formula=%5Cpartial) |
 
-  
-  
-作者：浪漫的凯旋  
-链接：https://www.jianshu.com/p/7778b2e0f176  
-来源：简书  
-简书著作权归作者所有，任何形式的转载都请联系作者获得授权并注明出处。
-

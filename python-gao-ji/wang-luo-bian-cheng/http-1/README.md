@@ -10,7 +10,7 @@
  HTTP是一种无状态的协议。HTTP协议自身不对请求和响应之间的通信状态进行保存。也就是说HTTP这个级别，协议对于发送过的请求和响应都不做持久化的处理。  
 
 
-![](../../../.gitbook/assets/image%20%2845%29.png)
+![](../../../.gitbook/assets/image%20%2846%29.png)
 
 **为什么要这么做？**  
  这是为了更快的处理大量的事务，确保协议的可伸缩性。而特意把HTTP设计得这么简单的。
@@ -29,7 +29,7 @@
 
 * PUT方法。传输文件。就想FTP协议中的请求文件上传一样，要求在请求报文的实体中包含文件内容，然后保存到请求的URI指定的位置。但是鉴于HTTP1.1的PUT方法自身不带有验证机制，任何人都可以上传文件，存在安全问题，因此一般的网站不选用这种方式。如果配合Web应用程序的验证机制，或架构设计采用REST标准的同类Web网站，就可能会开放使用PUT方法。
 
-![](../../../.gitbook/assets/image%20%2838%29.png)
+![](../../../.gitbook/assets/image%20%2839%29.png)
 
 * HEAD方法。获取报文首部 。HEAD方法和GET方法一样，只是不返回报文的主体部分。用于确认URI的有效性以及资源更新的日期时间等。
 * DELETE方法。删除文件。与PUT方法相反，按照请求的URI删除指定的资源。
@@ -37,13 +37,13 @@
 
 ![](../../../.gitbook/assets/image%20%284%29.png)
 
-![](../../../.gitbook/assets/image%20%2815%29.png)
+![](../../../.gitbook/assets/image%20%2816%29.png)
 
 * TRACE 追踪路径。让web服务器将之前的请求通信环回给客户端的方法。发送请求的时候，在Max-Forwards首部字段中加入数值，每经过一个服务器端该数字就减一，当数值刚好减到0的时候，就停止传输，最后收到请求的服务器返回的200OK的响应。
 
 但是TRACE方法本来就不怎么常用，而且它容易引发XST（跨站追踪），通常就更加不会用到了。
 
-![](../../../.gitbook/assets/image%20%2818%29.png)
+![](../../../.gitbook/assets/image%20%2819%29.png)
 
 * CONNECT方法。要求隧道协议连接代理。CONNECT方法要求在与代理服务器通信的时候建立隧道，实现用隧道协议进行TCP通信。主要使用SSL（secure sockets layer，安全套接层）和TLS（Transport Layer Security，传输层安全）协议把通信内容加密后经过网络隧道传输。
 
@@ -51,24 +51,24 @@ CONNECT方法的格式如下：
  CONNECT代理服务器名：端口号 HTTP版本  
 
 
-![](../../../.gitbook/assets/image%20%2820%29.png)
+![](../../../.gitbook/assets/image%20%2821%29.png)
 
 最后，我们要知道，方法的作用在于，可以指定请求的资源按照期望产生某种行为。而且方法的名称分大小写之分，记得使用大写。方法一览图
 
-![](../../../.gitbook/assets/image%20%2826%29.png)
+![](../../../.gitbook/assets/image%20%2827%29.png)
 
 ### 持久连接节省流量
 
 在一开始的HTTP协议中，每进行一次HTTP 通信就断开一次TCP连接。
 
-![](../../../.gitbook/assets/image%20%2822%29.png)
+![](../../../.gitbook/assets/image%20%2823%29.png)
 
 在请求一个很多资源的HTML页面的时候，每次连接都会造成无所谓的TCP连接的建立和断开，增加了通信量的开销。
 
 **什么是持久连接**  
  持久连接也被称为HTTP keep alive或者HTTP connection reuse。它的特点是，只要任意一端没有明确提出断开连接，则保持TCP连接状态。
 
-![](../../../.gitbook/assets/image%20%2856%29.png)
+![](../../../.gitbook/assets/image%20%2857%29.png)
 
 这样做的好处：
 
@@ -94,15 +94,15 @@ Cookie的工作原理：Cookie会根据从服务端发送的响应报文中的�
 
 * 第一次请求的时候（也就是还没有Cookie）
 
-![](../../../.gitbook/assets/image%20%2836%29.png)
+![](../../../.gitbook/assets/image%20%2837%29.png)
 
 * 第二次请求的时候
 
-![](../../../.gitbook/assets/image%20%2832%29.png)
+![](../../../.gitbook/assets/image%20%2833%29.png)
 
 上面两次请求的请求和响应报文如下所示：
 
-![](../../../.gitbook/assets/image%20%2842%29.png)
+![](../../../.gitbook/assets/image%20%2843%29.png)
 
 
 
