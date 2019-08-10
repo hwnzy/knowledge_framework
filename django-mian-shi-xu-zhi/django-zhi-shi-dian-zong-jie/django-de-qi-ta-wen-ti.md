@@ -23,7 +23,7 @@
    >
    > 返回一个可以被浏览器解析的符合HTTP协议的HttpResponse
 
-![Django&#x5BF9;http&#x8BF7;&#x6C42;&#x7684;&#x6267;&#x884C;&#x6D41;&#x7A0B;](../../.gitbook/assets/image%20%2838%29.png)
+![Django&#x5BF9;http&#x8BF7;&#x6C42;&#x7684;&#x6267;&#x884C;&#x6D41;&#x7A0B;](../../.gitbook/assets/image%20%2854%29.png)
 
 ## Django下的（内建）缓存机制
 

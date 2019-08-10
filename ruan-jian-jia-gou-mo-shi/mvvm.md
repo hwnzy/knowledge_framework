@@ -10,7 +10,7 @@ MVVM：将“数据模型数据双向绑定”的思想作为核心，在View和
 
 > 他把View和Contrller都放在了View层（相当于把Controller一部分逻辑抽离了出来），Model层依然是服务端返回的数据模型。**而ViewModel充当了一个UI适配器的角色，也就是说View中每个UI元素都应该在ViewModel找到与之对应的属性。除此之外，从Controller抽离出来的与UI有关的逻辑都放在了ViewModel中，这样就减轻了Controller的负担。**
 
-![mvvm&#x67B6;&#x6784;&#x56FE;](../.gitbook/assets/image%20%2810%29.png)
+![mvvm&#x67B6;&#x6784;&#x56FE;](../.gitbook/assets/image%20%2813%29.png)
 
 * **View层**：视图展示。包含UIView以及UIViewController，View层是可以持有ViewModel的。
 * **ViewModel层**：视图适配器。暴露属性与View元素显示内容或者元素状态一一对应。一般情况下ViewModel暴露的属性建议是readOnly的，至于为什么，我们在实战中会去解释。还有一点，ViewModel层是可以持有Model的。

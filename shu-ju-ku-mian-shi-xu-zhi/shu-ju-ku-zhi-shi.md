@@ -2,7 +2,7 @@
 
 Python 中操作 Mysql 步骤
 
-![](../.gitbook/assets/image%20%282%29.png)
+![](../.gitbook/assets/image%20%283%29.png)
 
 SQL 的 select 语句完整的执行顺序
 

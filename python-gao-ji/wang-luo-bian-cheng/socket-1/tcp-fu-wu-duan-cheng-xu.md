@@ -1,6 +1,6 @@
 # TCP服务端程序
 
-![TCP &#x670D;&#x52A1;&#x7AEF;&#x7A0B;&#x5E8F;&#x5F00;&#x53D1;&#x6D41;&#x7A0B;&#x7684;&#x4ECB;&#x7ECD;](../../../.gitbook/assets/image%20%286%29.png)
+![TCP &#x670D;&#x52A1;&#x7AEF;&#x7A0B;&#x5E8F;&#x5F00;&#x53D1;&#x6D41;&#x7A0B;&#x7684;&#x4ECB;&#x7ECD;](../../../.gitbook/assets/image%20%287%29.png)
 
 1. 创建服务端端套接字对象
 2. 绑定端口号

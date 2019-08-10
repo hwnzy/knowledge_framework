@@ -1,6 +1,6 @@
 # TCP 客户端程序
 
-![TCP &#x5BA2;&#x6237;&#x7AEF;&#x7A0B;&#x5E8F;&#x5F00;&#x53D1;&#x6D41;&#x7A0B;&#x7684;&#x4ECB;&#x7ECD;](../../../.gitbook/assets/image%20%2814%29.png)
+![TCP &#x5BA2;&#x6237;&#x7AEF;&#x7A0B;&#x5E8F;&#x5F00;&#x53D1;&#x6D41;&#x7A0B;&#x7684;&#x4ECB;&#x7ECD;](../../../.gitbook/assets/image%20%2820%29.png)
 
 1. 创建客户端套接字对象
 2. 和服务端套接字建立连接
