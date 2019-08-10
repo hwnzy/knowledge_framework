@@ -1,13 +1,13 @@
 # Table of contents
 
 * [Python工程师知识框架](README.md)
+* [RESTful设计](restful-she-ji.md)
 * [Git](git/README.md)
   * [基本使用](git/ji-ben-shi-yong.md)
 * [MarkDown数学公式](markdown-shu-xue-gong-shi.md)
 * [正则表达式](zheng-ze-biao-da-shi/README.md)
   * [Python正则表达式](zheng-ze-biao-da-shi/python-zheng-ze-biao-da-shi.md)
   * [案例](zheng-ze-biao-da-shi/li-zi.md)
-* [一些小知识](yi-xie-xiao-zhi-shi.md)
 * [排序算法](pai-xu-suan-fa/README.md)
   * [插入排序](pai-xu-suan-fa/cha-ru-pai-xu.md)
   * [shell排序](pai-xu-suan-fa/shell-pai-xu.md)
