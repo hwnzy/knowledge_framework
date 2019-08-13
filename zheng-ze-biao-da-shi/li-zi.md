@@ -36,7 +36,7 @@ if __name__ == '__main__':
 
 下面这张图是截止到2017年底，国内三家运营商推出的手机号段
 
-![](../.gitbook/assets/image%20%2810%29.png)
+![](../.gitbook/assets/image%20%2812%29.png)
 
 ```python
 import re
