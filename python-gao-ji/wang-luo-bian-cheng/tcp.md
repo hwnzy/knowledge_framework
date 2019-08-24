@@ -16,7 +16,7 @@ TCP 是面向连接的通讯协议，通过三次握手建立连接，通讯完�
 
 ## TCP连接
 
-![&#x5EFA;&#x7ACB;TCP&#x8FDE;&#x63A5;](../../.gitbook/assets/image%20%2878%29.png)
+![&#x5EFA;&#x7ACB;TCP&#x8FDE;&#x63A5;](../../.gitbook/assets/image%20%2879%29.png)
 
 | seq | ack | ACK | SYN | FIN |
 | :--- | :--- | :--- | :--- | :--- |
@@ -26,7 +26,7 @@ TCP 是面向连接的通讯协议，通过三次握手建立连接，通讯完�
 2. SYN=1, ACK=1, seq=y, ack=x+1
 3. ACK=1, seq=x+1, ack=y+1
 
-![&#x91CA;&#x653E;TCP&#x8FDE;&#x63A5;](../../.gitbook/assets/image%20%2879%29.png)
+![&#x91CA;&#x653E;TCP&#x8FDE;&#x63A5;](../../.gitbook/assets/image%20%2880%29.png)
 
 1. FIN=1, seq=u
 2. ACK=1, seq=v, ack=u+1

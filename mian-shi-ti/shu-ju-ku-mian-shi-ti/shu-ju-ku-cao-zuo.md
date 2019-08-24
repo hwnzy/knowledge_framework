@@ -1,6 +1,4 @@
-# 数据库面试题
-
-## MySQL数据库
+# 数据库操作
 
 ### mysql数据库的使用
 
@@ -67,7 +65,7 @@ quit/exit/ctrl+d # 退出
 | 默认 | default | 不填写时使用默认值 |
 | 外键约束 | foreign key | 对关系字段进行约束, 关联的表中查询值是否存在, |
 
-#### sql语句基本使用
+### sql语句基本使用
 
 * **数据库操作**
 
@@ -214,11 +212,17 @@ select 字段 from 表1 left join 表2 on 表1.字段1 = 表2.字段2
 select 字段 from 表1 right join 表2 on 表1.字段1 = 表2.字段2
 -- 自连接查询就是把一张表模拟成左右两张表，然后进行连表查询
 select c.id, c.title, c.pid, p.title from areas as c inner join areas as p on c.pid = p.id where p.title = '山西省';
+-- 一个select语句嵌入另外一个select语句, 被嵌入select语句为子查询语句，外部select语句为主查询
+select * from students where age > (select avg(age) from students); # 查询大于平均年龄的学生
+select name from classes where id in (select cls_id from students where cls_id is not null); # 查询学生在班的所有班级名字
+select * from students where (age, height) =  (select max(age), max(height) from students); # 查找年龄最大,身高最高的学生
 ```
 
-![](../.gitbook/assets/image%20%2836%29.png)
+![](../../.gitbook/assets/image%20%2837%29.png)
 
-![](../.gitbook/assets/image%20%2817%29.png)
+![](../../.gitbook/assets/image%20%2818%29.png)
+
+![](../../.gitbook/assets/image.png)
 
 
 

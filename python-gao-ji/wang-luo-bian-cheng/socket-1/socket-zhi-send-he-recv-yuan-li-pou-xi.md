@@ -18,7 +18,7 @@ recv是不是直接从客户端接收数据?
 
 #### 4. send和recv原理剖析图 <a id="4-send&#x548C;recv&#x539F;&#x7406;&#x5256;&#x6790;&#x56FE;"></a>
 
-![send&#x548C;recv&#x539F;&#x7406;&#x5256;&#x6790;&#x56FE;](../../../.gitbook/assets/image%20%2870%29.png)
+![send&#x548C;recv&#x539F;&#x7406;&#x5256;&#x6790;&#x56FE;](../../../.gitbook/assets/image%20%2871%29.png)
 
 **说明:**
 
