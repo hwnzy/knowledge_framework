@@ -84,7 +84,7 @@ LFU（Least Frequently Used 最近最少使用算法）
 
 它是基于“如果一个数据在最近一段时间内使用次数很少，那么在将来一段时间内被使用的可能性也很小”的思路。
 
-![](../.gitbook/assets/image%20%2861%29.png)
+![](../.gitbook/assets/image%20%2865%29.png)
 
 **LFU需要定期衰减。**
 

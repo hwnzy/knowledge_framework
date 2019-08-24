@@ -15,7 +15,7 @@ uWSGI：是一个`web`服务器，实现了`WSGI`协议、`uwsgi`协议、`http`
 
 `WSGI`协议其实是定义了一种`server`与`application`解耦的规范，即可以有多个实现`WSGI server`的服务器，也可以有多个实现`WSGI application`的框架，那么就可以选择任意的`server`和`application`组合实现自己的`web`应用。例如`uWSGI`和`Gunicorn`都是实现了`WSGI server`协议的服务器，`Django`，`Flask`是实现了`WSGI application`协议的`web`框架，可以根据项目实际情况搭配使用。
 
-![](../.gitbook/assets/image%20%286%29.png)
+![](../.gitbook/assets/image%20%287%29.png)
 
 像`Django`，`Flask`框架都有自己实现的简单的`WSGI server`，一般用于服务器调试，生产环境下建议用其他`WSGI server`。
 
@@ -105,7 +105,7 @@ def run(addr, port, wsgi_handler, ipv6=False, threading=False):
 
 下面表示`WSGI server`服务器处理流程中关键的类和方法。
 
-![](../.gitbook/assets/image%20%2878%29.png)
+![](../.gitbook/assets/image%20%2882%29.png)
 
 * WSGIServer `run()`方法会创建`WSGIServer`实例，主要作用是接收客户端请求，将请求传递给`application`，然后将`application`返回的`response`返回给客户端。
   * 创建实例时会指定`HTTP`请求的`handler`：`WSGIRequestHandler`类

@@ -4,6 +4,8 @@
 * [RESTful设计](restful-she-ji.md)
 * [Git](git.md)
 * [MarkDown数学公式](markdown-shu-xue-gong-shi.md)
+* [面试题](mian-shi-ti/README.md)
+  * [数据库面试题](mian-shi-ti/shu-ju-ku-mian-shi-ti.md)
 * [Python基础面试题](python-mian-shi-ti.md)
 * [项目面试题](xiang-mu-mian-shi-ti.md)
 * [Django基础面试题](django-ji-chu-mian-shi-ti/README.md)
