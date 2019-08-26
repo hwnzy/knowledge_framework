@@ -9,6 +9,7 @@
     * [Untitled](mian-shi-ti/shu-xue-yu-luo-ji/untitled.md)
     * [智力题](mian-shi-ti/shu-xue-yu-luo-ji/zhi-li-ti.md)
   * [数据库面试题](mian-shi-ti/shu-ju-ku-mian-shi-ti/README.md)
+    * [数据库日常练习](mian-shi-ti/shu-ju-ku-mian-shi-ti/shu-ju-ku-ri-chang-lian-xi.md)
     * [数据库操作](mian-shi-ti/shu-ju-ku-mian-shi-ti/shu-ju-ku-cao-zuo.md)
     * [数据库进阶问题](mian-shi-ti/shu-ju-ku-mian-shi-ti/shu-ju-ku-jin-jie-wen-ti.md)
 * [Python基础面试题](python-mian-shi-ti.md)
