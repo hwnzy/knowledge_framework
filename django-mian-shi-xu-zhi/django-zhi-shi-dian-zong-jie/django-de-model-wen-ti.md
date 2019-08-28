@@ -15,7 +15,7 @@
 
 ## 判断查询集是否有数据
 
-> exists\(\)：判断查询集中是否有数据，有返回True，没有返回False
+* exists\(\)：判断查询集中是否有数据，有返回True，没有返回False
 
 ## QuerySet的get和filter方法的区别
 

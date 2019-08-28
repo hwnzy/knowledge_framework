@@ -2,7 +2,7 @@
 
 ## Django本身提供了runserver，为什么不能用来部署？
 
-> runserver方法主要在测试和开发中调试Django，其使用Django自带的WSGI Server运行，runserver开启方式为单线
+> runserver方法主要在测试和开发中调试Django，其使用Django自带的WSGI Server运行，runserver开启方式为单线程
 >
 > uWSGI是一个Web服务器，它实现了WSGI协议、uwsgi、http等协议。uwsgi是一种通信协议，而uWSGI是实现uwsgi协议和WSGI协议的Web服务器，uWSGI具有超快的性能、低内存占用和多app管理等优点，并且搭配着Nginx就是一个生产环境了，能够将用户访问请求与应用app隔离开，实现真正的部署。相比来讲，支持的并发量更高，方便管理多进程，发挥多核的优势，提升性能。
 

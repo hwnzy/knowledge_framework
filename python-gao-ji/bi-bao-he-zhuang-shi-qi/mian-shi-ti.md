@@ -6,16 +6,18 @@
 
 ```python
 import time
+
 def timeit(func):
     def wrapper():
         start = time.clock()
-        func()  # 把函数包裹在功能里面
+        func()
         end = time.clock()
-        print 'used:', end - start
+        print('used:', end-start)
     return wrapper
+
 @timeit
 def foo():
-print 'in foo()'foo()
+    print('in foo()', foo())
 ```
 
 ## 解释一下什么是闭包?
@@ -34,11 +36,11 @@ print 'in foo()'foo()
 
 ```python
 # 插入日志
-def trace_func(func):  
-    def tmp(*args, **kargs):  
-        print 'Start %s(%s, %s)...' % (func.__name__, args, kargs)  
-        return func(*args, **kargs)  
-    return tmp  
+def trace_func(func):
+    def tmp(*args, **kwargs):
+        print('start %s(%s, %s)...' % (func.__name__, args, kwargs))
+        return func(*args, **kwargs)
+    return tmp
 ```
 
 ```python

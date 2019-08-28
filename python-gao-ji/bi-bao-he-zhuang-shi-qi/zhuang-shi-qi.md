@@ -22,12 +22,12 @@ def wrapper(func):
 ```python
 def make_div(func):
     def inner(*args, **kwargs):
-        return "<div>" + func() + "</div>"
+        return "<div>" + func(*args, **kwargs) + "</div>"
     return inner
 
 def make_p(func):
     def inner(*args, **kwargs):
-        return "<p>" + func() + "</p>"
+        return "<p>" + func(*args, **kwargs) + "</p>"
     return inner
 
 @make_div

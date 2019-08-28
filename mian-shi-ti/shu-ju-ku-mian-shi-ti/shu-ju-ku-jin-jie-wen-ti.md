@@ -4,11 +4,11 @@
 
 ### 1. 是什么
 
-视图是虚拟的表，本身不包含数据，数据都存储在原始表中。
+视图是虚拟的表，本身不包含数据，数据都存储在原始表中
 
 ### 2. 创建视图
 
-```text
+```sql
 CREATE VIEW myview AS
 SELECT C1, Concat(C2, C3)
 FROM mytable

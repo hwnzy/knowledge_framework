@@ -1,15 +1,16 @@
 # 交换排序
 
 ```python
-def bubble_sort(collection):
-    length = len(collection)
-    for i in range(length-1):
+def bubble_sort(lst):
+    _len = len(lst)
+    for i in range(_len-1):
         swapped = False
-        for j in range(length-1-i):
-            if collection[j] > collection[j+1]:
+        for j in range(_len-1-i):
+            if lst[j] > lst[j+1]:
                 swapped = True
-                collection[j], collection[j+1] = collection[j+1], collection[j]
-        if not swapped: break  # Stop iteration if the collection is sorted
-    return collection
+                lst[j], lst[j+1] = lst[j+1], lst[j]
+        if not swapped: 
+            break
+    return lst
 ```
 

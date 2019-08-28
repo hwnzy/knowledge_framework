@@ -21,7 +21,7 @@
 学生表 Student
 
 ```text
-create table Student(SId varchar(10),Sname varchar(10),Sage datetime,Ssex varchar(10));
+create table Student(Sid varchar(10),Sname varchar(10),Sage datetime,Ssex varchar(10));
 insert into Student values('01' , '赵雷' , '1990-01-01' , '男');
 insert into Student values('02' , '钱电' , '1990-12-21' , '男');
 insert into Student values('03' , '孙风' , '1990-05-20' , '男');
@@ -39,43 +39,43 @@ insert into Student values('13' , '孙七' , '2018-01-01' , '女');
 科目表 Course
 
 ```text
-create table Course(CId varchar(10),Cname nvarchar(10),TId varchar(10))
-insert into Course values('01' , '语文' , '02')
-insert into Course values('02' , '数学' , '01')
-insert into Course values('03' , '英语' , '03')
+create table Course(Cid varchar(10),Cname varchar(10),Tid varchar(10));
+insert into Course values('01' , '语文' , '02');
+insert into Course values('02' , '数学' , '01');
+insert into Course values('03' , '英语' , '03');
 ```
 
 教师表 Teacher
 
 ```text
-create table Teacher(TId varchar(10),Tname varchar(10))
-insert into Teacher values('01' , '张三')
-insert into Teacher values('02' , '李四')
-insert into Teacher values('03' , '王五')
+create table Teacher(Tid varchar(10),Tname varchar(10));
+insert into Teacher values('01' , '张三');
+insert into Teacher values('02' , '李四');
+insert into Teacher values('03' , '王五');
 ```
 
 成绩表 SC
 
 ```text
-create table SC(SId varchar(10),CId varchar(10),score decimal(18,1))
-insert into SC values('01' , '01' , 80)
-insert into SC values('01' , '02' , 90)
-insert into SC values('01' , '03' , 99)
-insert into SC values('02' , '01' , 70)
-insert into SC values('02' , '02' , 60)
-insert into SC values('02' , '03' , 80)
-insert into SC values('03' , '01' , 80)
-insert into SC values('03' , '02' , 80)
-insert into SC values('03' , '03' , 80)
-insert into SC values('04' , '01' , 50)
-insert into SC values('04' , '02' , 30)
-insert into SC values('04' , '03' , 20)
-insert into SC values('05' , '01' , 76)
-insert into SC values('05' , '02' , 87)
-insert into SC values('06' , '01' , 31)
-insert into SC values('06' , '03' , 34)
-insert into SC values('07' , '02' , 89)
-insert into SC values('07' , '03' , 98)
+create table sc(Sid varchar(10),Cid varchar(10),score decimal(18,1));
+insert into sc values('01' , '01' , 80);
+insert into sc values('01' , '02' , 90);
+insert into sc values('01' , '03' , 99);
+insert into sc values('02' , '01' , 70);
+insert into sc values('02' , '02' , 60);
+insert into sc values('02' , '03' , 80);
+insert into sc values('03' , '01' , 80);
+insert into sc values('03' , '02' , 80);
+insert into sc values('03' , '03' , 80);
+insert into sc values('04' , '01' , 50);
+insert into sc values('04' , '02' , 30);
+insert into sc values('04' , '03' , 20);
+insert into sc values('05' , '01' , 76);
+insert into sc values('05' , '02' , 87);
+insert into sc values('06' , '01' , 31);
+insert into sc values('06' , '03' , 34);
+insert into sc values('07' , '02' , 89);
+insert into sc values('07' , '03' , 98);
 ```
 
 ### 练习题目 <a id="&#x7EC3;&#x4E60;&#x9898;&#x76EE;"></a>
@@ -84,7 +84,7 @@ insert into SC values('07' , '03' , 98)
 2. 查询平均成绩大于等于 60 分的同学的学生编号和学生姓名和平均成绩
 3. 查询在 SC 表存在成绩的学生信息
 4. 查询所有同学的学生编号、学生姓名、选课总数、所有课程的总成绩\(没成绩的显示为 null \) 4.1 查有成绩的学生信息
-5. 查询「李」姓老师的数量
+5. 查询「李」姓老师的数量sho, 
 6. 查询学过「张三」老师授课的同学的信息
 7. 查询没有学全所有课程的同学的信息
 8. 查询至少有一门课与学号为" 01 "的同学所学相同的同学的信息
@@ -165,12 +165,12 @@ and  sc.CId='02'
 1. 查询平均成绩大于等于 60 分的同学的学生编号和学生姓名和平均成绩
 
 ```text
-select student.*,t1.avgscore
-from student inner JOIN(
-select sc.SId ,AVG(sc.score)as avgscore
+select Student.*,t1.avgscore
+from Student inner JOIN(
+select sc.Sid ,AVG(sc.score)as avgscore
 from sc 
-GROUP BY sc.SId
-HAVING AVG(sc.score)>=60)as t1 on student.SId=t1.SId 
+GROUP BY sc.Sid
+HAVING AVG(sc.score)>=60)as t1 on Student.Sid=t1.Sid;
 ```
 
 1. 查询在 SC 表存在成绩的学生信息
@@ -473,7 +473,7 @@ select student.SId,sc.CId,sc.score from Student  left join sc  on student.SId=sc
 
 ```text
 select student.Sname,course.Cname,sc.score
-from student , sc  ,course
+from student,sc,course
 where sc.score>=70
 and  student.SId=sc.SId
 and sc.CId=course.CId

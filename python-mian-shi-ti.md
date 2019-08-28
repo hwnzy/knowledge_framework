@@ -8,7 +8,7 @@
 
 &gt;&gt; help\('keywords'\)
 
-```text
+```python
 Here is a list of the Python keywords.  Enter any keyword to get more help.
 
 and                 elif                import              return

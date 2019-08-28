@@ -22,7 +22,7 @@ Unix和Linux操作系统上提供了`fork()`系统调用来创建进程，调用
 
 下面用一个下载文件的例子来说明使用多进程和不使用多进程到底有什么差别，先看看下面的代码。
 
-```text
+```python
 from random import randint
 from time import time, sleep
 
@@ -58,7 +58,7 @@ Peking Hot.avi下载完成! 耗费了7秒
 
 从上面的例子可以看出，如果程序中的代码只能按顺序一点点的往下执行，那么即使执行两个毫不相关的下载任务，也需要先等待一个文件下载完成后才能开始下一个下载任务，很显然这并不合理也没有效率。接下来我们使用多进程的方式将两个下载任务放到不同的进程中，代码如下所示。
 
-```text
+```python
 from multiprocessing import Process
 from os import getpid
 from random import randint
@@ -103,7 +103,7 @@ Python从入门到住院.pdf下载完成! 耗费了10秒
 
 我们也可以使用subprocess模块中的类和函数来创建和启动子进程，然后通过管道来和子进程通信，这些内容我们不在此进行讲解，有兴趣的读者可以自己了解这些知识。接下来我们将重点放在如何实现两个进程间的通信。我们启动两个进程，一个输出Ping，一个输出Pong，两个进程输出的Ping和Pong加起来一共10个。听起来很简单吧，但是如果这样写可是错的哦。
 
-```text
+```python
 from multiprocessing import Process
 from time import sleep
 
@@ -133,7 +133,7 @@ if __name__ == '__main__':
 
 在Python早期的版本中就引入了thread模块（现在名为\_thread）来实现多线程编程，然而该模块过于底层，而且很多功能都没有提供，因此目前的多线程开发我们推荐使用threading模块，该模块对多线程编程提供了更好的面向对象的封装。我们把刚才下载文件的例子用多线程的方式来实现一遍。
 
-```text
+```python
 from random import randint
 from threading import Thread
 from time import time, sleep
@@ -164,7 +164,7 @@ if __name__ == '__main__':
 
 我们可以直接使用threading模块的`Thread`类来创建线程，但是我们之前讲过一个非常重要的概念叫“继承”，我们可以从已有的类创建新类，因此也可以通过继承`Thread`类的方式来创建自定义的线程类，然后再创建线程对象并启动线程。代码如下所示。
 
-```text
+```python
 from random import randint
 from threading import Thread
 from time import time, sleep
@@ -201,7 +201,7 @@ if __name__ == '__main__':
 
 因为多个线程可以共享进程的内存空间，因此要实现多个线程间的通信相对简单，大家能想到的最直接的办法就是设置一个全局变量，多个线程共享这个全局变量即可。但是当多个线程共享同一个变量（我们通常称之为“资源”）的时候，很有可能产生不可控的结果从而导致程序失效甚至崩溃。如果一个资源被多个线程竞争使用，那么我们通常称之为“临界资源”，对“临界资源”的访问需要加上保护，否则资源会处于“混乱”的状态。下面的例子演示了100个线程向同一个银行账户转账（转入1元钱）的场景，在这个例子中，银行账户就是一个临界资源，在没有保护的情况下我们很有可能会得到错误的结果。
 
-```text
+```python
 from time import sleep
 from threading import Thread
 
@@ -255,7 +255,7 @@ if __name__ == '__main__':
 
 运行上面的程序，结果让人大跌眼镜，100个线程分别向账户中转入1元钱，结果居然远远小于100元。之所以出现这种情况是因为我们没有对银行账户这个“临界资源”加以保护，多个线程同时向账户中存钱时，会一起执行到`new_balance = self._balance + money`这行代码，多个线程得到的账户余额都是初始状态下的`0`，所以都是`0`上面做了+1的操作，因此得到了错误的结果。在这种情况下，“锁”就可以派上用场了。我们可以通过“锁”来保护“临界资源”，只有获得“锁”的线程才能访问“临界资源”，而其他没有得到“锁”的线程只能被阻塞起来，直到获得“锁”的线程释放了“锁”，其他线程才有机会获得“锁”，进而访问被保护的“临界资源”。下面的代码演示了如何使用“锁”来保护对银行账户的操作，从而获得正确的结果。
 
-```text
+```python
 from time import sleep
 from threading import Thread, Lock
 
@@ -335,7 +335,7 @@ if __name__ == '__main__':
 
 如下所示的界面中，有“下载”和“关于”两个按钮，用休眠的方式模拟点击“下载”按钮会联网下载文件需要耗费10秒的时间，如果不使用“多线程”，我们会发现，当点击“下载”按钮后整个程序的其他部分都被这个耗时间的任务阻塞而无法执行了，这显然是非常糟糕的用户体验，代码如下所示。
 
-```text
+```python
 import time
 import tkinter
 import tkinter.messagebox
@@ -373,7 +373,7 @@ if __name__ == '__main__':
 
 如果使用多线程将耗时间的任务放到一个独立的线程中执行，这样就不会因为执行耗时间的任务而阻塞了主线程，修改后的代码如下所示。
 
-```text
+```python
 import time
 import tkinter
 import tkinter.messagebox
@@ -423,7 +423,7 @@ if __name__ == '__main__':
 
 我们来完成1~100000000求和的计算密集型任务，这个问题本身非常简单，有点循环的知识就能解决，代码如下所示。
 
-```text
+```python
 from time import time
 
 
@@ -444,7 +444,7 @@ if __name__ == '__main__':
 
 在上面的代码中，我故意先去创建了一个列表容器然后填入了100000000个数，这一步其实是比较耗时间的，所以为了公平起见，当我们将这个任务分解到8个进程中去执行的时候，我们暂时也不考虑列表切片操作花费的时间，只是把做运算和合并运算结果的时间统计出来，代码如下所示。
 
-```text
+```python
 from multiprocessing import Process, Queue
 from random import randint
 from time import time

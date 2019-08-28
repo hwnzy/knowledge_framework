@@ -2,7 +2,7 @@
 
 ```python
 def quick_sort(lst):
-    de qsort(lst, begin, end):
+    def qsort(lst, begin, end):
         if begin >= end:
             return
         pivot = lst[begin]
