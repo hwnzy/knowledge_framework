@@ -10,7 +10,6 @@ a = '''hello'''
 a = """hello"""  # hello
 b = "%s" % a  # hello
 c = f'{a}, 1+1={1+1}, {{a}}'  # 'hello, 1+1=2, {a}'
-c = F'{a}, 1+1={1+1}, {{a}}'
 ```
 
 ### 字符串常见操作
@@ -48,7 +47,7 @@ mystr.strip()
 # rfind()类似于find()函数，不过是从右边开始查找
 mystr.rfind(str, start=0,end=len(mystr))
 # rindex()类似于index()，不过是从右边开始
-mystr.rindex( str, start=0,end=len(mystr))
+mystr.rindex(str, start=0,end=len(mystr))
 # 把mystr以str分割成三部分，str前，str和str后
 mystr.partition(str)
 # rpartition()类似于 partition()函数,不过是从右边开始
