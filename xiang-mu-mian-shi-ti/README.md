@@ -6,7 +6,7 @@
 
 
 
-![](.gitbook/assets/tu-pian-2.png)
+![](../.gitbook/assets/tu-pian-2.png)
 
 |  | 表 | 含义 | 组成 |
 | :--- | :--- | :--- | :--- |
