@@ -1,6 +1,6 @@
 # 数据库操作
 
-### GRmysql数据库的使用
+### mysql数据库的使用
 
 ```bash
 sudo apt-get install mysql-server # 安装mysql服务端
