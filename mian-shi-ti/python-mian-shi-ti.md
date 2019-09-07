@@ -1,5 +1,422 @@
 # Python基础面试题
 
+## 常用的 Python 标准库都有哪些？
+
+| os  | time | threading | pymysql | multiprocessing | queue | random |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| 操作系统 | 时间 | 线程 | 连接数据库 | 连接数据库 | 队列 | 随机 |
+
+## 赋值、浅拷贝和深拷贝的区别？
+
+* **赋值**
+
+在 Python 中，对象的赋值就是简单的对象引用： 
+
+```python
+a = [1,2,"hello",['python', 'C++']] 
+b = a
+```
+
+在上述a 和 b 指向同一片内存，b是a的引用，可使用`b is a` 去判断，返回 `True`，表明他们地址相同，内容相同，也可以使用 id\(\)函数看两个列表的地址是否相同。
+
+* **浅拷贝\(shallow copy\)**
+
+浅拷贝会创建新对象，其内容非原对象本身的引用，而是原对象内第一层对象的引用。 
+
+浅拷贝有三种形式:切片操作、工厂函数、 copy 模块中的 copy 函数。 
+
+**切片操作**：`b = a[:]` 或者 `b = [x for x in a]`
+
+**工厂函数**：`b = list(a)`
+
+**copy 函数**：`b = copy.copy(a)`
+
+列表 b 列表 a 使用 is 判断可以发现他们不是同一个对象，使用 id 查看也不指向同一片内存空间。**但当我们使用 `id(x) for x in a` 和 `id(x) for x in b` 查看 a 和 b 中元素地址，可以看到二者包含的元素的地址是相同的。** 
+
+**但是要注意的是**，浅拷贝只拷贝了一层，列表 a 中嵌套的 list，修改了它情况就不一样。 比如：`a[3].append('java')`。查看列表 b会发现列表 b 也发生了变化。
+
+* **深拷贝\(deep copy\)**
+
+深拷贝只有使用copy 模块中的`deepcopy()`函数。 深拷贝拷贝了对象所有元素，因此时间和空间开销高。 
+
+如果使用 b = copy.deepcopy\(a\)，再修改列表 b 将不会影响到列表 a，因为深拷贝拷贝出来的对象根本就是一个全新的对象， 不再与原来的对象有任何的关联。
+
+* **拷贝的注意点**
+
+对于非容器类型，如数字、字符，以及其他的“原子” 类型，没有拷贝一说，产生的都是原对象的引用。 
+
+如果元组变量值包含原子类型对象，即使采用了深拷贝，也只能得到浅拷贝。
+
+## \_\_init\_\_ 和\_\_new\_\_的区别？
+
+`__init__` 在对象创建后，对对象进行初始化。 
+
+`__new__` 是在对象创建之前创建一个对象，并将该对象返回给 `__init__`。
+
+## Python 里面如何生成随机数？
+
+在 Python 中用于生成随机数的模块是 random
+
+`random.random()`：生成一个 0-1 之间的随机浮点数
+
+`random.randint(a, b)`：生成\[a, b\]之间的整数
+
+`random.choice(sequence)`：从特定序列中随机取一个元素，序列可以是字符串，列表， 元组等。
+
+## 输入某年某月某日，判断这一天是这一年的第几天？
+
+```python
+import datetime
+def dayofyear():
+    year = input("请输入年份：")
+    month = input("请输入月份：")
+    day = input("请输入天：")
+    date1 = datetime.date(year=int(year), month=int(month), day=int(day))
+    date2 = datetime.date(year=int(year), month=1, day=1)
+    return (date1 - date2 + 1).day
+```
+
+## 打乱一个排好序的 list 对象 alist？
+
+```python
+import random
+random.shuffle(alist)
+```
+
+## 说明一下 os.path 和 sys.path 分别代表什么？
+
+`os.path` 主要是用于对系统路径文件的操作。 
+
+`sys.path` 主要是对 Python 解释器的系统环境参数的操作（动态的改变 Python 解释器搜索路径）。
+
+## Python 中的 os 模块常见方法？
+
+`os.remove()`删除文件 
+
+`os.rename()`重命名文件 
+
+`os.path.join()`将分离的各部分组合成一个路径名
+
+`os.path.exists()`是否存在
+
+## Python 的 sys 模块常用方法？
+
+`sys.argv` 命令行参数 List，第一个元素是程序本身路径
+
+## 模块和包是什么？
+
+* 模块是搭建程序的一种方式。每一个Python代码文件都是一个模块，并可以引用其他的模块，比如对象和属性。 
+* 包是包含许多模块和子文件夹的文件夹。
+
+## unittest 是什么？
+
+unittest 是Python中的**单元测试框架**。它拥有支持`共享搭建`、`自动测试`、`在测试中暂停代码`、`将不同测试迭代成一组`等功能。
+
+## Python 中有日志吗?怎么使用?
+
+Python 自带`logging`模块，调用 `logging.basicConfig()`方法配置需要的日志等级和相应的参数， Python 解释器会按照配置的参数生成相应的日志。
+
+## 在 except 中 return 后还会不会执行 finally 中的代码？怎么抛出自定义异常？
+
+finally 中的代码会继续处理 
+
+raise 可以抛出自定义异常
+
+## 介绍一下 except 的作用和用法
+
+
+
+## 4G 内存怎么读取一个 5G 的数据？
+
+方法一： 可以通过生成器，分多次读取，每次读取数量相对少的数据（比如 500MB）进行处理，处理结束后 在读取后面的 500MB 的数据。 
+
+方法二： 可以通过 linux 命令 split 切割成小文件，然后再对数据进行处理，此方法效率比较高。可以按照行 数切割，可以按照文件大小切割。
+
+## 现在考虑有一个 jsonline 格式的文件 file.txt 大小约为 10K，之前处理文件的 代码如下所示
+
+```python
+def get_lines():
+    l = []
+    with open(‘file.txt’，‘rb’ ) as f:
+        for eachline in f:
+            l.append(eachline)
+    return l
+if __name__ == ‘__main__’ :
+    for e in get_lines():
+        process(e) #处理每一行数据
+```
+
+现在要处理一个大小为 10G 的文件，但是内存只有 4G，如果在只修改 get\_lines 函数而其他代 码保持不变的情况下，应该如何实现？需要考虑的问题都有哪些？
+
+```python
+def get_lines():
+    l = []
+    with open(‘file.txt’，’ rb’ ) as f:
+        data = f.readlines(60000)
+    l.append(data)
+    yield l
+```
+
+要考虑到的问题有： 内存只有 4G 无法一次性读入 10G 的文件，需要分批读入。分批读入数据要记录每次读入数据的位 置。分批每次读入数据的大小，太小就会在读取操作上花费过多时间。
+
+## read、 readline 和 readlines 的区别?
+
+read:读取整个文件
+
+readline：读取下一行，使用生成器方法
+
+readlines：读取整个文件到一个迭代器以供我们遍历
+
+## 补充缺失的代码？
+
+```python
+def print_directory_contents(sPath):
+    """
+    这个函数接收文件夹的名称作为输入参数
+    返回该文件夹中文件的路径
+    以及其包含文件夹中文件的路径
+    """
+# 补充代码
+```
+
+```python
+import os
+for sChild in os.listdir(sPath):
+    sChildPath = os.path.join(sPath, sChild)
+    if os.path.isdir(sChildPath):
+        print_directory_contents(sChildPath)
+    else:
+        print(sChildPath)
+```
+
+##  Python中可变对象和不可变对象？
+
+不可变对象，该对象所指向的内存中的值不能被改变。当改变某个变量时候，由于其所指的值不能被改变，相当于把原来的值复制一份后再改变，这会开辟一个新的地址，变量再指向这个新的地址。 
+
+可变对象，该对象所指向的内存中的值可以被改变。变量（准确的说是引用）改变后，实际上是其所指的值直接发生改变，并没有发生复制行为，也没有开辟新的出地址，通俗点说就是原地改变。 
+
+Python 中，数值类型（int 和 float）、字符串 str、元组 tuple 都是**不可变类型**。而列表 list、字典 dict、集合 set 是**可变类型**。
+
+## Python 中 is 和==的区别？
+
+is 判断的是 a 对象是否就是 b 对象，是通过 id 来判断的。 
+
+==判断的是 a 对象的值是否和 b 对象的值相等，是通过 value 来判断的。
+
+## Python 的魔法方法
+
+魔法方法就是可以给你的类增加魔力的特殊方法，如果你的对象实现 （重载）了这些方法中的某一个，那么这个方法就会在特殊的情况下被 Python 所调用，你可以定义自己想要的行为，而这一切都是自动发生的。 
+
+**\_\_init\_\_** 构造器，当一个实例被创建的时候初始化的方法。但是它并不是实例化调用的第一个方法。
+
+**\_\_new\_\_**才是实例化对象调用的第一个方法，它只取下 cls 参数，并把 其他参数传给 **\_\_init\_\_**。 **\_\_new\_\_**很少使 用，但是也有它适合的场景，尤其 是当类继承自一个像元组或者字符串这样不经常改变的类型的时候。 
+
+**\_\_call\_\_** 允许一个类的实例像函数一样被调用 。 
+
+**\_\_getitem\_\_** 定义获取容器中指定元素的行为，相当于 self\[key\] 。 
+
+**\_\_getattr\_\_** 定义当用户试图访问一个不存在属性的时候的行为 。 
+
+**\_\_setattr\_\_** 定义当一个属性被设置的时候的行为 。 
+
+**\_\_getattribute\_\_** 定义当一个属性被访问的时候的行为 。
+
+## 面向对象中怎么实现只读属性?
+
+```python
+class MyCls(object):
+    __weight = 50
+
+    @property #以访问属性的方式来访问 weight 方法
+    def weight(self):
+        return self.__weight
+
+if __name__ == '__main__':
+    obj = MyCls()
+    print(obj.weight)
+    obj.weight = 12
+```
+
+## 谈谈你对面向对象的理解？
+
+面向对象是相对于面向过程而言的。
+
+面向过程语言是一种**基于功能分析的、以算法为中心**的程序设计方法。
+
+面向对象是一种基于结构分析的、以数据为中心的程序设计思想。在面向对象语言中有一个有很重要东西，叫做类。 
+
+面向对象有三大特性：**封装、继承、多态**。
+
+## Python 中类方法、类实例方法、静态方法有何区别？
+
+**类方法**：类对象的方法，在定义时需要在上方使用“@classmethod”进行装饰，形参为 cls， 表示类对象。类对象和实例对象都可调用。
+
+**类实例方法**：类实例化对象的方法，只有实例对象可以调用，形参为 self，指代对象本身。
+
+**静态方法**：一个任意函数，在其上方使用“@staticmethod”进行装饰，可以用对象直接调用， 静态方法实际上跟该类没有太大关系。
+
+## Python 中如何动态获取和设置对象的属性？
+
+```python
+if hasattr(Parent, 'x'):
+    print(getattr(Parent, 'x'))
+    setattr(Parent, 'x', 3)
+print(getattr(Parent, 'x'))
+```
+
+## Python 函数调用的时候参数的传递方式是值传递还是引用传递？
+
+Python 的参数传递有：位置参数、默认参数、可变参数、关键字参数。
+
+函数的传值到底是值传递还是引用传递，要分情况：
+
+* 不可变参数用值传递：
+
+> 像整数和字符串这样的不可变对象，是通过拷贝进行传递的，因为你无论如何都不可能在原处改变不可变对象。
+
+* 可变参数是引用传递的：
+
+> 比如像列表，字典这样的对象是通过引用传递、和 C 语言里面的用指针传递数组很相似，可变对象能在函数内部改变。
+
+## 对缺省参数的理解？
+
+> 缺省参数指在调用函数的时候没有传入参数的情况下，调用默认的参数，在调用函数的同时赋值时，所传入的参数会替代默认参数。
+
+**args 是不定长参数**，他可以表示输入参数是不确定的，可以是任意多个。 __
+
+**\*kwargs 是关键字参数**，赋值的时候是以键 = 值的方式，参数是可以任意多对
+
+在定义函数的时候不确定会有多少参数会传入时，就可以使用两个参数。
+
+## 为什么函数名字可以当做参数用?
+
+Python 中一切皆对象，函数名是函数在内存中的空间，也是一个对象。
+
+## Python 中 pass 语句的作用是什么？
+
+在编写代码时只写框架思路，具体实现还未编写就可以用 pass 进行占位，使程序不报错，不会进 行任何操作。
+
+## 有这样一段代码，print c 会输出什么，为什么？
+
+```python
+a = 10
+b = 20
+c = [a]
+a = 15
+```
+
+答：10 对于字符串、数字，传递是相应的值。
+
+## 什么是 lambda 函数？ 有什么好处？
+
+lambda 函数是一个可以接收任意多个参数\(包括可选参数\)并且返回单个表达式值的函数 
+
+1.  lambda 函数比较轻便，即用即仍，很适合需要完成一项功能，但是此功能只在此一处使用， 连名字都很随意的情况下
+2. 匿名函数，一般用来给 filter， map 这样的函数式编程服务
+3. 作为回调函数，传递给某些应用，比如消息处理
+
+## 下面这段代码的输出结果将是什么？请解释
+
+```python
+def multipliers():
+    return [lambda x : i * x for i in range(4)]
+print [m(2) for m in multipliers()]
+```
+
+上面代码输出的结果是\[6， 6， 6， 6\]，而不是我们想的\[0， 2， 4， 6\]
+
+上述问题产生的原因是 **Python 闭包的延迟绑定**。这意味着内部函数被调用时，参数的值在闭包内进行查找。因此当任何由 multipliers\(\)返回的函数被调用时，i 的值将在附近的范围进行查找。**那时不管返回的函数是否被调用，for 循环已经完成**，i 被赋予了最终的值 3。因此，每次返回的函数乘以传递过来的值 3，因为上段代码传过来的值是 2，它们最终返回的都是 6。
+
+## 你如何修改上面的 multipliers 的定义产生想要的结果？
+
+一种解决方法就是用 Python 生成器
+
+```python
+def multipliers():
+    for i in range(4): 
+        yield lambda x : i * x
+```
+
+另外一个解决方案就是创造一个闭包，利用默认函数立即绑定
+
+```python
+def multipliers():
+    return [lambda x, i=i : i * x for i in range(4)]
+```
+
+## map 函数和 reduce 函数？
+
+* **参数方面**
+
+map\(\)包含两个参数，第一个参数是一个函数，第二个是序列（列表 或元组）
+
+函数可以接收一个或多个参数
+
+educe\(\)第一个参数是函数，第二个是序列（列表或元组）
+
+函数必须接收两个参数
+
+* **传入数值**
+
+map\(\)将函数依次作用到序列的每个元素，每个元素都是独自被函数“作用”一次 。 
+
+reduce\(\)将函数作用在序列的第一个元素得到结果后，把这个结果继续与下一个元素作用 （累积计算）
+
+## 递归函数停止的条件？
+
+1. 判断递归的次数是否达到某一限定值
+2. 判断运算的结果是否达到某个范围等，根据设计的目的来选择
+
+## 回调函数，如何通信的?
+
+回调函数是把函数的地址作为参数传递给另一个函数，将整个函数当作一个对象赋值给调用的函数。
+
+## Python 主要的内置数据类型都有哪些？ 
+
+内建类型：布尔类型、数字、字符串、列表、元组、字典、集合
+
+## `print(dir('a'))` 的输出？
+
+输出字符串'a'的内建方法
+
+## print\(list\(map\(lambda x: x \* x, \[y for y in range\(3\)\]\)\)\)的输出？
+
+`[0， 1， 4]`
+
+## hasattr\(\) getattr\(\) setattr\(\) 函数使用详解？
+
+* hasattr\(object, name\)函数
+
+> 判断一个对象里面是否有name属性或者name方法，返回bool值，有name属性\(方法\)返回True， 否则返回 False。
+
+* getattr\(object, name\[,default\]\) 函数
+
+> 获取对象 object 的属性或者方法，如果存在则打印出来，如果不存在，打印默认值，默认值可选。 注意：如果返回的是对象的方法，则打印结果是方法的内存地址，如果需要运行这个方法，可以在后面添加括号\(\)。
+
+* setattr\(object,name,values\)函数
+
+> 给对象的属性赋值，若属性不存在，先创建再赋值。
+
+```python
+class function_demo(object):
+    name = 'demo'
+    def run(self):
+        return "hello function"
+functiondemo = function_demo()
+res = hasattr(functiondemo, 'addr') # 先判断是否存在 
+if res:
+    addr = getattr(functiondemo, 'addr')
+    print(addr)
+else:
+    addr = getattr(functiondemo, 'addr', setattr(functiondemo, 'addr', '北京首都'))
+    #addr = getattr(functiondemo, 'addr', '美国纽约')
+    print(addr)
+```
+
+## 一句话解决阶乘函数？
+
+`reduce(lambda x,y: x*y, range(1,n+1))  # python2中使用，python3中取消了该函数`
+
 ## 使用 Socket 套接字需要传入哪些参数 ？
 
 Address Family 和 Type，分别表示套接字应用场景和类型。 family 的值可以是 AF\_UNIX\(Unix 域，用于同一台机器上的进程间通讯\)，也可以是 AF\_INET （对于 IPV4 协议的 TCP 和 UDP），至于 type 参数，SOCK\_STREAM（流套接字）或者 SOCK\_DGRAM（数据报文套接字）,SOCK\_RAW（raw 套接字）
