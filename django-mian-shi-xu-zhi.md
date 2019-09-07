@@ -1,5 +1,172 @@
 # Django
 
+## Django的认识
+
+> Django是走大而全的方向，其最出名的是其全自动化的管理后台，只需要使用ORM做简单的对象定义就可以自动生成数据库结构以及全功能的管理后台。
+>
+> Django内置的ORM跟框架内的其他模块耦合程度高。
+>
+> 应用程序必须使用Django内置的ORM，否则就不能享受到框架内提供的种种基于的ORM的便利。
+>
+> Django的卖点是超高的开发效率，其性能扩展有限，正常并发量不过10000，采用Django的项目，在流量达到一定规模后，都需要对其进行重构，才能满足性能要求。比如把笨重的框架给拆掉自己写socket实现http通信，底层用纯C，C++写提升效率，自己编写封装与数据库交互的框架，因为ORM使用外键来联系表与表之间的查询。
+>
+> Django适用的是中小型的网站，或者是作为大型网站快速实现产品雏形的工具。
+>
+> Django模板设计哲学是彻底将代码、样式分离，杜绝在模板中编码和处理数据的可能。
+
+## Django命令
+
+创建项目和应用的命令？
+
+> django-admin startproject 项目名
+>
+> python manage.py startapp 应用名
+
+生成迁移文件和执行迁移文件的命令是什么？
+
+> python manage.py makemigrations
+>
+> python manage.py migrate
+>
+> python manage.py makemigrations app\_name
+>
+> python manage.py migrate app\_name
+>
+> python manage.py migrate app\_name 0004  \# 回退到迁移文件0004\_xxx.py
+>
+> python manage.py showmigrations  \# 查看迁移文件的执行状态
+
+## Django中间件\(Django.MIDDLEWARES\)的作用
+
+中间件是介于request和reponse处理之间的一道处理过程，相对比较轻量级，并且在全局上改变django的输入和输出
+
+![&#x4E2D;&#x95F4;&#x4EF6;&#x7684;&#x4F7F;&#x7528;&#x60C5;&#x51B5;](.gitbook/assets/image%20%2819%29.png)
+
+
+
+## Django创建项目后项目文件夹下组成部分
+
+* mange.py：项目运行入口，指定配置文件路径
+* 与项目同名的目录
+  * \_\_init\_\_.py：Python包的构造文件，可以做一些初始化操作
+  * settings.py：项目整体配置文件
+  * urls.py：项目的URL配置文件
+  * wsgi.py：项目与WSGI兼容的Web服务器
+
+## Django如何提升性能（高并发）
+
+对于后端程序员来说，提升性能指标主要有两个，一个是并发数，一个是响应时间。
+
+网站的性能优化一般包括：web前端性能优化，应用服务器性能优化，存储服务器优化：
+
+*  web前端性能优化
+  * 减少HTTP请求，减少数据库访问量，比如使用雪碧图（CSS Sprites 类似于游戏开发中的精灵图块，把一堆小图标整合在一张背景透明的大图上）
+  * 使用浏览器缓存，将一些常用的css,js,logo图标等静态资源缓存到本地浏览器，通过设置http中的cache-control和expires的属性，可以设定浏览器缓存，缓存时间。
+  * 对html,css,javascript文件进行压缩，减少网络的通信量
+* 应用服务器优化
+  * 使用celery消息队列，将耗时的操作扔进队列里，让worker去监听队列里的任务，实现异步操作，比如发邮件、发短信。
+  * 代码上的优化
+    * 优化算法时间：
+
+      > Python中可以通过选择合适的数据结构来优化时间复杂度，如list和set查找某个元素的时间复杂度分别为O\(n\)和O\(1\)。还可以使用分治，分支界限，贪心，动态规划等思想
+
+    * 循环优化：
+
+      > 在Python原生的解释器下减少在循环内部执行的工作量，例如可以用变量代替求得的值，使值变成已知的。
+
+    * 函数选择
+    * 并行编程
+  * 配置合适的配置参数，提升效率，增加并发量
+  * 搭建服务器集群，将并发访问请求分散到多台服务器上处理
+  * 运维人员性能优化技术
+  * 服务器使用固态硬盘技术
+* 存储服务器优化
+  * 合理使用缓存技术，对一些常用到的动态数据，比如首页做一个缓存，或者常用数据做一个缓存，设置一定的过期时间，减少对数据库的压力，提升网站性能。
+
+## 
+
+## Django本身提供了runserver，为什么不能用来部署？
+
+> runserver方法主要在测试和开发中调试Django，其使用Django自带的WSGI Server运行，runserver开启方式为单线程
+>
+> uWSGI是一个Web服务器，它实现了WSGI协议、uwsgi、http等协议。uwsgi是一种通信协议，而uWSGI是实现uwsgi协议和WSGI协议的Web服务器，uWSGI具有超快的性能、低内存占用和多app管理等优点，并且搭配着Nginx就是一个生产环境了，能够将用户访问请求与应用app隔离开，实现真正的部署。相比来讲，支持的并发量更高，方便管理多进程，发挥多核的优势，提升性能。
+
+## Django对http请求的执行流程
+
+1. 在接收一个HTTP请求之前的准备
+
+   > 启动一个支持WSGI网关协议的服务器监听端口等待外界的HTTP请求，比如Django自带的WSGI server 或者 uWSGI服务器
+   >
+   > 服务器根据WSGI协议指定相应的Handler来处理Http请求，并且初始化该Handler，在Django框架中由框架自身负责实现这一个Handler
+
+2. 此时服务器已经处于监听状态，可以接收外界的HTTP请求
+3. 当一个HTTP请求到达服务器的时候
+
+   > 服务器根据WSGI协议从HTTP请求中提取必要的参数组成一个字典（environ）并传入Handler中进行处理。
+   >
+   > 在Handler中对已经符合WSGI协议标准规定的HTTP请求进行分析，比如加载Django提供的中间件，路由分配，调用路由匹配的视图等。
+   >
+   > 返回一个可以被浏览器解析的符合HTTP协议的HttpResponse
+
+![Django&#x5BF9;http&#x8BF7;&#x6C42;&#x7684;&#x6267;&#x884C;&#x6D41;&#x7A0B;](.gitbook/assets/image%20%2865%29.png)
+
+## Django下的（内建）缓存机制
+
+> Django根据设置的缓存方式，浏览器第一次请求时，cache会缓存单个变量或整个网页等内容到硬盘或内存中，同时设置response头部，当浏览器再次发起请求时，附带f-Modified-Since请求时间到Django，Django发现f-Modified-Since会先去参数之后，会与缓存中的过期时间相比较，如果缓存时间比较新，则会重新请求数据，并缓存起来然后返回response给客户端，如果缓存没有过期，则直接从缓存中提取数据，返回给response给客户端。
+
+## Django中如何加载初始化数据
+
+> Django在创建对象时调用save\(\)方法后，ORM框架会把对象的属性转换为写入数据库中，实现对数据库的初始化。通过操作对象，查询数据库，将查询集返回给视图函数，通过模板语言展现在前端页面。
+
+## Django中哪里用到了线程，哪里用到了协程，哪里用到了进程
+
+> 1. django中耗时任务使用多线程发送邮件.send\_mail\(\)、异步任务.celery消息队列
+> 2. django原生为单线程程序，当第一个请求没有完成，第二个请求就会被阻塞
+> 3. django自带的development server为多线程模式
+
+## Django项目调试
+
+1. 使用Django的error page
+
+   > 适用于测试环境。Django的error page功能很强大，能提供详细的traceback，包括局部变量的值，请求中的GET、POST、COOKIE数据，HTTP环境中所有重要的META fields
+
+2. 输出log到开发服务器终端中
+
+   > 适用于生产环境，借助python的logging模块
+
+## 关系型数据库的关系包含哪些类型?
+
+* ForeignKey：一对多，将字段定义在多的一端
+* ManyToManyField：多对多，将字段定义在两端中
+* OneToOneField：一对一，将字段定义在任意一端中
+
+## 查询集返回列表的过滤器有哪些
+
+* all\(\)：返回模型类所有的数据
+* filter\(\)：返回满足条件的数据
+* exclude\(\)：返回满足条件之外的数据，相当于sql语句中where部分的not关键字
+* order\_by\(\)：排序
+
+## 判断查询集是否有数据
+
+* exists\(\)：判断查询集中是否有数据，有返回True，没有返回False
+
+## QuerySet的get和filter方法的区别
+
+* 【输入参数】
+  * get参数只能是model中定义的那些字段，只支持严格匹配
+  * filter的参数可以是字段，也可以是扩展的where查询关键字，如in, like等
+* 【返回值】
+  * get返回值是一个定义的model对象
+  * filter返回值是一个新的QuerySet对象，然后可以对QuerySet在进行查询返回新的QuerySet对象，支持链式操作QuerySet一个集合对象，可以使用迭代或者遍历，切片，但是不等同于list类型
+* 【异常】
+  * get只有一条记录返回的时候才正常，也就说明get的查询字段必须是主键或者唯一约束的字段，当返回多条记录或者是没有找到记录的时候会抛出异常，MultipleObjectsReturned和DoesNotExist。
+  * filter有没有匹配记录都可以
+
+## model的SlugField类型字段有什么用途
+
+> SlugField字段是将输入内容中的空格都替换为'-'之后保存，Slug是一个新闻术语，通常是某些东西的短标签。一个slug只能包含字母、数字、下划线或者是连字符，通常作为短标签。通常用来放在URL里
+
 
 
 #### 基本场景
