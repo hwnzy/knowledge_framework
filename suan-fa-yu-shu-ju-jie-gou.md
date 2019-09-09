@@ -189,7 +189,7 @@ def tim_sort(lst):
 1. 从左到右逐个字符匹配
 2. 发现不匹配时转去考虑目标串里的下一个位置是否与模式串匹配
 
-![&#x6734;&#x7D20;&#x7684;&#x5B57;&#x7B26;&#x4E32;&#x5339;&#x914D;](.gitbook/assets/image%20%2820%29.png)
+![&#x6734;&#x7D20;&#x7684;&#x5B57;&#x7B26;&#x4E32;&#x5339;&#x914D;](.gitbook/assets/image%20%2822%29.png)
 
 ```python
 def naive_matching(t, p):
@@ -207,7 +207,7 @@ def naive_matching(t, p):
 
 ### 无回溯串匹配算法（KMP算法）
 
-![&#x6734;&#x7D20;&#x5339;&#x914D;&#x548C;KMP&#x5339;&#x914D;&#x8FC7;&#x7A0B;](.gitbook/assets/image%20%2812%29.png)
+![&#x6734;&#x7D20;&#x5339;&#x914D;&#x548C;KMP&#x5339;&#x914D;&#x8FC7;&#x7A0B;](.gitbook/assets/image%20%2814%29.png)
 
 | 字串 | a | g | c | t | a | g | c | a | g | c | t | a | g | c | t | g |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -344,11 +344,11 @@ BST是指一棵空树或者具有以下性质的二叉树：
 * 任意节点的左右字树也分别为二叉查找树
 * 没有键值相等的点
 
-![BST](.gitbook/assets/image%20%2888%29.png)
+![BST](.gitbook/assets/image%20%2891%29.png)
 
 在理想情况下，二叉查找树增删改查的时间复杂度为O\(logN\)，但是若是二叉树极度不平衡，比如下图这样形成了一个线性链后，就会产生最坏运行情况O\(N\)
 
-![&#x6700;&#x574F;&#x8FD0;&#x884C;&#x590D;&#x6742;&#x5EA6;](.gitbook/assets/image%20%2830%29.png)
+![&#x6700;&#x574F;&#x8FD0;&#x884C;&#x590D;&#x6742;&#x5EA6;](.gitbook/assets/image%20%2832%29.png)
 
 ## 红黑树
 
@@ -361,7 +361,7 @@ BST是指一棵空树或者具有以下性质的二叉树：
 * 每个红色节点的两个子节点都是黑色。\(从每个叶子到根的所有路径上不能有两个连续的红色节点\) 
 * 从任一节点到其每个叶子的所有路径都包含相同数目的黑色节点
 
-![&#x7EA2;&#x9ED1;&#x6811;](.gitbook/assets/image%20%2851%29.png)
+![&#x7EA2;&#x9ED1;&#x6811;](.gitbook/assets/image%20%2853%29.png)
 
 ## B树
 
@@ -376,21 +376,21 @@ BST是指一棵空树或者具有以下性质的二叉树：
 
 ### 插入
 
-![](.gitbook/assets/image%20%2870%29.png)
+![](.gitbook/assets/image%20%2872%29.png)
 
 ### 
 
-![](.gitbook/assets/image%20%2856%29.png)
+![](.gitbook/assets/image%20%2858%29.png)
 
-![](.gitbook/assets/image%20%2886%29.png)
+![](.gitbook/assets/image%20%2889%29.png)
 
 ### 删除
 
-![](.gitbook/assets/image%20%2874%29.png)
+![](.gitbook/assets/image%20%2876%29.png)
 
 ![](.gitbook/assets/image%20%282%29.png)
 
-![](.gitbook/assets/image%20%2882%29.png)
+![](.gitbook/assets/image%20%2885%29.png)
 
 ## B+树
 
@@ -402,7 +402,7 @@ BST是指一棵空树或者具有以下性质的二叉树：
 4. 为所有叶子结点增加一个链指针
 5. 所有关键字都在叶子结点出现
 
-![](.gitbook/assets/image%20%2881%29.png)
+![](.gitbook/assets/image%20%2883%29.png)
 
 
 
@@ -413,7 +413,7 @@ BST是指一棵空树或者具有以下性质的二叉树：
 3. 反复执行上述操作直到V出发可达的所有顶点都已访问（递归）
 4. 如果图中存在未访问的顶点，则选出一个未访问的顶点，从它的出发重复前述过程，直到图中所有顶点都已访问为止
 
-![&#x6DF1;&#x5EA6;&#x4F18;&#x5148;&#x904D;&#x5386;](.gitbook/assets/image%20%2833%29.png)
+![&#x6DF1;&#x5EA6;&#x4F18;&#x5148;&#x904D;&#x5386;](.gitbook/assets/image%20%2835%29.png)
 
 ```python
 

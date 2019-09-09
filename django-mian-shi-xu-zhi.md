@@ -40,7 +40,7 @@
 
 中间件是介于request和reponse处理之间的一道处理过程，相对比较轻量级，并且在全局上改变django的输入和输出
 
-![&#x4E2D;&#x95F4;&#x4EF6;&#x7684;&#x4F7F;&#x7528;&#x60C5;&#x51B5;](.gitbook/assets/image%20%2819%29.png)
+![&#x4E2D;&#x95F4;&#x4EF6;&#x7684;&#x4F7F;&#x7528;&#x60C5;&#x51B5;](.gitbook/assets/image%20%2821%29.png)
 
 
 
@@ -108,7 +108,7 @@
    >
    > 返回一个可以被浏览器解析的符合HTTP协议的HttpResponse
 
-![Django&#x5BF9;http&#x8BF7;&#x6C42;&#x7684;&#x6267;&#x884C;&#x6D41;&#x7A0B;](.gitbook/assets/image%20%2865%29.png)
+![Django&#x5BF9;http&#x8BF7;&#x6C42;&#x7684;&#x6267;&#x884C;&#x6D41;&#x7A0B;](.gitbook/assets/image%20%2867%29.png)
 
 ## Django下的（内建）缓存机制
 

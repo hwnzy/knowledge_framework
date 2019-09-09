@@ -220,9 +220,9 @@ select name from classes where id in (select cls_id from students where cls_id i
 select * from students where (age, height) =  (select max(age), max(height) from students); # 查找年龄最大,身高最高的学生
 ```
 
-![](../.gitbook/assets/image%20%2837%29.png)
+![](../.gitbook/assets/image%20%2839%29.png)
 
-![](../.gitbook/assets/image%20%2818%29.png)
+![](../.gitbook/assets/image%20%2820%29.png)
 
 ![](../.gitbook/assets/image.png)
 

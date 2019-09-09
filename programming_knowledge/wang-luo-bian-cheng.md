@@ -147,11 +147,11 @@ if __name__ == '__main__':
 1. GET 方式的请求报文
 2. POST 方式的请求报文
 
-![GET&#x548C;POST&#x8BF7;&#x6C42;&#x5BF9;&#x6BD4;&#x6548;&#x679C;&#x56FE;](../.gitbook/assets/image%20%2887%29.png)
+![GET&#x548C;POST&#x8BF7;&#x6C42;&#x5BF9;&#x6BD4;&#x6548;&#x679C;&#x56FE;](../.gitbook/assets/image%20%2890%29.png)
 
 #### HTTP响应报文 <a id="1-http&#x54CD;&#x5E94;&#x62A5;&#x6587;&#x5206;&#x6790;"></a>
 
-![HTTP&#x54CD;&#x5E94;&#x62A5;&#x6587;](../.gitbook/assets/image%20%2813%29.png)
+![HTTP&#x54CD;&#x5E94;&#x62A5;&#x6587;](../.gitbook/assets/image%20%2815%29.png)
 
 | 状态码 | 说明 |
 | :--- | :--- |
@@ -215,7 +215,7 @@ TCP 是面向连接的通讯协议，通过三次握手建立连接，通讯完�
 
 ## TCP连接
 
-![&#x5EFA;&#x7ACB;TCP&#x8FDE;&#x63A5;](../.gitbook/assets/image%20%2879%29.png)
+![&#x5EFA;&#x7ACB;TCP&#x8FDE;&#x63A5;](../.gitbook/assets/image%20%2881%29.png)
 
 | seq | ack | ACK | SYN | FIN |
 | :--- | :--- | :--- | :--- | :--- |
@@ -225,7 +225,7 @@ TCP 是面向连接的通讯协议，通过三次握手建立连接，通讯完�
 2. SYN=1, ACK=1, seq=y, ack=x+1
 3. ACK=1, seq=x+1, ack=y+1
 
-![&#x91CA;&#x653E;TCP&#x8FDE;&#x63A5;](../.gitbook/assets/image%20%2880%29.png)
+![&#x91CA;&#x653E;TCP&#x8FDE;&#x63A5;](../.gitbook/assets/image%20%2882%29.png)
 
 1. FIN=1, seq=u
 2. ACK=1, seq=v, ack=u+1

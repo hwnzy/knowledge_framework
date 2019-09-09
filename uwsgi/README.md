@@ -105,7 +105,7 @@ def run(addr, port, wsgi_handler, ipv6=False, threading=False):
 
 下面表示`WSGI server`服务器处理流程中关键的类和方法。
 
-![](../.gitbook/assets/image%20%2883%29.png)
+![](../.gitbook/assets/image%20%2886%29.png)
 
 * WSGIServer `run()`方法会创建`WSGIServer`实例，主要作用是接收客户端请求，将请求传递给`application`，然后将`application`返回的`response`返回给客户端。
   * 创建实例时会指定`HTTP`请求的`handler`：`WSGIRequestHandler`类

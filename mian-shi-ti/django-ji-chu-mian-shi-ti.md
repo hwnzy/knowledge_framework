@@ -6,7 +6,7 @@
 
 MVC 设计模型是一种使用 Model View Controller（ 模型-视图-控制器）设计创建 Web 应用程序的模式。
 
-![](../.gitbook/assets/image%20%2858%29.png)
+![](../.gitbook/assets/image%20%2860%29.png)
 
 1. M全拼为Model，主要封装对数据库层的访问，对数据库中的数据进行增、删、改、查操作。
 2. V全拼为View，用于封装结果，生成页面展示的html内容。
