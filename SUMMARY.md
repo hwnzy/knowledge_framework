@@ -3,6 +3,7 @@
 * [Python工程师知识框架](README.md)
 * [back-end framework](back-end-framework.md)
 * [Programming\_Knowledge](programming_knowledge/README.md)
+  * [Vim](programming_knowledge/vim.md)
   * [正则表达式](programming_knowledge/zheng-ze-biao-da-shi.md)
   * [RESTful设计](programming_knowledge/restful-she-ji.md)
   * [Git](programming_knowledge/git.md)
