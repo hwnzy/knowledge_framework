@@ -1,8 +1,8 @@
 # Table of contents
 
-* [Python工程师知识框架](README.md)
+* [知识框架](README.md)
 * [Programming\_Knowledge](programming_knowledge/README.md)
-  * [Python基础](programming_knowledge/python-ji-chu.md)
+  * [Python基础](python-ji-chu.md)
   * [linux命令](programming_knowledge/linux-ming-ling.md)
   * [Vim](programming_knowledge/vim.md)
   * [正则表达式](programming_knowledge/zheng-ze-biao-da-shi.md)
