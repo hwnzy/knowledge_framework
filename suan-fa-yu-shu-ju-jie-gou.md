@@ -344,7 +344,7 @@ BST是指一棵空树或者具有以下性质的二叉树：
 * 任意节点的左右字树也分别为二叉查找树
 * 没有键值相等的点
 
-![BST](.gitbook/assets/image%20%2891%29.png)
+![BST](.gitbook/assets/image%20%2892%29.png)
 
 在理想情况下，二叉查找树增删改查的时间复杂度为O\(logN\)，但是若是二叉树极度不平衡，比如下图这样形成了一个线性链后，就会产生最坏运行情况O\(N\)
 
@@ -376,21 +376,21 @@ BST是指一棵空树或者具有以下性质的二叉树：
 
 ### 插入
 
-![](.gitbook/assets/image%20%2872%29.png)
+![](.gitbook/assets/image%20%2873%29.png)
 
 ### 
 
-![](.gitbook/assets/image%20%2858%29.png)
+![](.gitbook/assets/image%20%2859%29.png)
 
-![](.gitbook/assets/image%20%2889%29.png)
+![](.gitbook/assets/image%20%2890%29.png)
 
 ### 删除
 
-![](.gitbook/assets/image%20%2876%29.png)
+![](.gitbook/assets/image%20%2877%29.png)
 
 ![](.gitbook/assets/image%20%282%29.png)
 
-![](.gitbook/assets/image%20%2885%29.png)
+![](.gitbook/assets/image%20%2886%29.png)
 
 ## B+树
 
@@ -402,7 +402,7 @@ BST是指一棵空树或者具有以下性质的二叉树：
 4. 为所有叶子结点增加一个链指针
 5. 所有关键字都在叶子结点出现
 
-![](.gitbook/assets/image%20%2883%29.png)
+![](.gitbook/assets/image%20%2884%29.png)
 
 
 
