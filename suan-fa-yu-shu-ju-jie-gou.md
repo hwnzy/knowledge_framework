@@ -1,4 +1,4 @@
-# Data\_Structures\_and\_Algorithms
+# algorithms
 
  算法设计模式
 
@@ -414,8 +414,4 @@ BST是指一棵空树或者具有以下性质的二叉树：
 4. 如果图中存在未访问的顶点，则选出一个未访问的顶点，从它的出发重复前述过程，直到图中所有顶点都已访问为止
 
 ![&#x6DF1;&#x5EA6;&#x4F18;&#x5148;&#x904D;&#x5386;](.gitbook/assets/image%20%2835%29.png)
-
-```python
-
-```
 
