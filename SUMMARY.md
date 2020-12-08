@@ -15,5 +15,6 @@
   * [数据库面试题](mian-shi-ti/shu-ju-ku-mian-shi-ti.md)
 * [算法知识](suan-fa-yu-shu-ju-jie-gou.md)
 * [框架知识](kuang-jia-zhi-shi/README.md)
-  * [Django](kuang-jia-zhi-shi/django.md)
+  * [game](kuang-jia-zhi-shi/game.md)
+  * [gevent](kuang-jia-zhi-shi/django.md)
 
