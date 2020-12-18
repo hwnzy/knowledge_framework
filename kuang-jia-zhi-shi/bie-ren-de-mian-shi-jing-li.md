@@ -106,6 +106,7 @@ from tb_student a
 where year(in_time)=2017 and major="计算机"
 order by a.age asc
 limit 10
+select a.name, a.id, a.class, a.age from student a where year order by age asc
 ```
 
 2.统计每个班同学各科成绩平均分大于80分的人数和人数占比
