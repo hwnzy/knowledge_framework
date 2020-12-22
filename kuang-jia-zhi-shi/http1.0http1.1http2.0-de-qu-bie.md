@@ -81,7 +81,7 @@ http1.1支持长连接和请求的流水线\(pipelining\),在一个TCP链接上�
 1. http1的解析是基于文本协议的各式解析,而http2.0的协议解析是二进制格式,更加的强大
 2. **多路复用\(Mutiplexing\) :** 一个连接上可以有多个request,且可以随机的混在一起,每个不同的request都有对应的id,服务端可以通过request\_id来辨别,大大加快了传输速率
 3. header压缩: http1.x中的header需要携带大量信息.而且每次都要重复发送.http2.0使用encode来减少传输的header大小.而且客户端和服务端可以各自缓存\(cache\)一份header filed表,避免了header的重复传输,还可以减少传输的大小.
-4. 服务端推送\(server push\): 可以通过解析html中的依赖,只能的返回所需的其他文件\(css或者js等\),而不用再发起一次请求.
+4. 服务端推送\(server push\): 可以通过解析html中的依赖,智能地返回所需的其他文件\(css或者js等\),而不用再发起一次请求.
 
 > 多路复用的示意图
 
