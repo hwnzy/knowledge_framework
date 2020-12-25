@@ -1324,6 +1324,8 @@ InnoDB 实现多版本控制 （MVCC）是通过 ReadView+ UndoLog 实现的，U
 
 ### ★★★ B+ Tree 原理，与其它查找树的比较。 
 
+
+
 ### ★★★ MySQL 索引以及优化。 
 
 ### ★★★ 查询优化。 
