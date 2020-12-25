@@ -1324,37 +1324,1230 @@ InnoDB 实现多版本控制 （MVCC）是通过 ReadView+ UndoLog 实现的，U
 
 ### ★★★ B+ Tree 原理，与其它查找树的比较。 
 
+图2是一个d=2的B-Tree示意图。
+
+![B-Tree](http://blog.codinglabs.org/uploads/pictures/theory-of-mysql-index/2.png)
+
+![B+&#x6811;](http://blog.codinglabs.org/uploads/pictures/theory-of-mysql-index/3.png)
+
+![&#x5E26;&#x6709;&#x987A;&#x5E8F;&#x8BBF;&#x95EE;&#x6307;&#x9488;&#x7684;B+&#x6811;](http://blog.codinglabs.org/uploads/pictures/theory-of-mysql-index/4.png)
+
+为什么使用B-Tree（B+Tree）
+
+上文说过，红黑树等数据结构也可以用来实现索引，但是文件系统及数据库系统普遍采用B-/+Tree作为索引结构，这一节将结合计算机组成原理相关知识讨论B-/+Tree作为索引的理论基础。
+
+一般来说，索引本身也很大，不可能全部存储在内存中，因此索引往往以索引文件的形式存储的磁盘上。这样的话，索引查找过程中就要产生磁盘I/O消耗，相对于内存存取，I/O存取的消耗要高几个数量级，所以评价一个数据结构作为索引的优劣最重要的指标就是在查找过程中磁盘I/O操作次数的渐进复杂度。换句话说，索引的结构组织要尽量减少查找过程中磁盘I/O的存取次数。下面先介绍内存和磁盘存取原理，然后再结合这些原理分析B-/+Tree作为索引的效率。
+
+B-树和B+树的区别
+
 \(1\) B+树改进了B树, 让内结点只作索引使用, 去掉了其中指向data record的指针, 使得每个结点中能够存放更多的key, 因此能有更大的出度. 这有什么用? 这样就意味着存放同样多的key, 树的层高能进一步被压缩, 使得检索的时间更短.
 
 \(2\)当然了,由于底部的叶子结点是链表形式, 因此也可以实现更方便的顺序遍历, 但是这是比较次要的, 最主要的的还是第\(1\)点.
 
 ### ★★★ MySQL 索引以及优化。 
 
+* 索引是加快数据库的查询速度的一种手段
+* 创建索引使用: alter table 表名 add index 索引名\[可选\] \(字段名, xxx\);
+* 删除索引使用: alter table 表名 drop index 索引名;
+
+索引在MySQL中也叫做“键”，它是一个特殊的文件，它保存着数据表里所有记录的位置信息，更通俗的来说，数据库索引好比是一本书前面的目录，能加快数据库的查询速度。
+
+**应用场景:**
+
+当数据库中数据量很大时，查找数据会变得很慢，我们就可以通过索引来提高数据库的查询效率。
+
+#### 联合索引 <a id="4-&#x8054;&#x5408;&#x7D22;&#x5F15;"></a>
+
+联合索引又叫复合索引，即一个索引覆盖表中两个或者多个字段，一般用在多个字段一起查询的时候。
+
+```text
+-- 创建teacher表
+create table teacher
+(
+    id int not null primary key auto_increment,
+    name varchar(10),
+    age int
+);
+
+-- 创建联合索引
+alter table teacher add index (name,age);
+```
+
+**联合索引的好处:**
+
+* 减少磁盘空间开销，因为每创建一个索引，其实就是创建了一个索引文件，那么会增加磁盘空间的开销。
+
+#### 5. 联合索引的最左原则 <a id="5-&#x8054;&#x5408;&#x7D22;&#x5F15;&#x7684;&#x6700;&#x5DE6;&#x539F;&#x5219;"></a>
+
+在使用联合索引的时候，我们要遵守一个最左原则,即index\(name,age\)支持 name 、name 和 age 组合查询,而不支持单独 age 查询，因为没有用到创建的联合索引。
+
+**最左原则示例:**
+
+```text
+-- 下面的查询使用到了联合索引
+select * from stu where name='张三' -- 这里使用了联合索引的name部分
+select * from stu where name='李四' and age=10 -- 这里完整的使用联合索引，包括 name 和 age 部分 
+-- 下面的查询没有使用到联合索引
+select * from stu where age=10 -- 因为联合索引里面没有这个组合，只有 name | name age 这两种组合
+```
+
+**说明:**
+
+* 在使用联合索引的查询数据时候一定要保证联合索引的最左侧字段出现在查询条件里面，否则联合索引失效
+
+#### 6. MySQL中索引的优点和缺点和使用原则 <a id="6-mysql&#x4E2D;&#x7D22;&#x5F15;&#x7684;&#x4F18;&#x70B9;&#x548C;&#x7F3A;&#x70B9;&#x548C;&#x4F7F;&#x7528;&#x539F;&#x5219;"></a>
+
+* 优点：
+  1. 加快数据的查询速度
+* 缺点：
+  1. 创建索引会耗费时间和占用磁盘空间，并且随着数据量的增加所耗费的时间也会增加
+* 使用原则：
+  1. 通过优缺点对比，不是索引越多越好，而是需要自己合理的使用。
+  2. 对经常更新的表就避免对其进行过多索引的创建，对经常用于查询的字段应该创建索引，
+  3. 数据量小的表最好不要使用索引，因为由于数据较少，可能查询全部数据花费的时间比遍历索引的时间还要短，索引就可能不会产生优化效果。
+  4. 在一字段上相同值比较多不要建立索引，比如在学生表的"性别"字段上只有男，女两个不同值。相反的，在一个字段上不同值较多可是建立索引。
+
+数据库优化
+
+* 在进行表设计时，可适度增加冗余字段\(反范式设计\)，减少JOIN操作；
+* 多字段表可以进行垂直分表优化，多数据表可以进行水平分表优化；
+* 选择恰当的数据类型，如整型的选择；
+* 对于强调快速读取的操作，可以考虑使用MyISAM数据库引擎；
+* 对较频繁的作为查询条件的字段创建索引；唯一性太差的字段不适合单独创建索引，即使频繁作为查询条件；更新非常频繁的字段不适合创建索引；
+* 编写SQL时使用上面的方式对SQL语句进行优化；
+* 使用慢查询工具找出效率低下的SQL语句进行优化；
+* 构建缓存，减少数据库磁盘操作；
+* 可以考虑结合使用内在型数据库，如Redis，进行混合存储。
+
 ### ★★★ 查询优化。 
+
+* 避免全表扫描，应考虑在 where 及 order by 涉及的列上建立索引；
+* 查询时使用select明确指明所要查询的字段，避免使用`select *`的操作；
+* SQL语句尽量大写，如
+
+  ```text
+    SELECT name FROM t WHERE id=1
+  ```
+
+  对于小写的sql语句，通常数据库在解析sql语句时，通常会先转换成大写再执行。
+
+* 尽量避免在 where 子句中使用!=或&lt;&gt;操作符， MySQL只有对以下操作符才使用索引：&lt;，&lt;=，=，&gt;，&gt;=，BETWEEN，IN，以及某些时候的LIKE；
+
+  ```text
+    SELECT id FROM t WHERE name LIKE ‘abc%’
+  ```
+
+* 对于模糊查询，如：
+
+  ```text
+    SELECT id FROM t WHERE name LIKE ‘%abc%’
+  ```
+
+  或者
+
+  ```text
+    SELECT id FROM t WHERE name LIKE ‘%abc’
+  ```
+
+  将导致全表扫描，应避免使用，若要提高效率，可以考虑全文检索；
+
+* 遵循最左原则，在where子句中写查询条件时把索引字段放在前面，如
+
+  ```text
+    mobile为索引字段，name为非索引字段
+    推荐
+    SELECT ... FROM t WHERE mobile='13911111111' AND name='python'
+    不推荐
+    SELECT ... FROM t WHERE name='python' AND mobile='13911111111' 
+
+    建立了复合索引 key(a, b, c)
+    推荐
+    SELECT ... FROM t WHERE a=... AND b=... AND c= ...
+    SELECT ... FROM t WHERE a=... AND b=...
+    SELECT ... FROM t WHERE a=...
+    不推荐 (字段出现顺序不符合索引建立的顺序)
+    SELECT ... FROM t WHERE b=... AND c=...
+    SELECT ... FROM t WHERE b=... AND a=... AND c=...
+    ...
+  ```
+
+* 能使用关联查询解决的尽量不要使用子查询，如
+
+  ```text
+    子查询
+    SELECT article_id, title FROM t_article WHERE user_id IN (SELECT user_id FROM t_user  WHERE user_name IN ('itcast', 'itheima', 'python'))
+
+    关联查询(推荐)
+    SELECT b.article_id, b.title From t_user AS a INNER JOIN t_article AS b ON a.user_id=b.user_id WHERE a.user_name IN ('itcast', 'itheima', 'python');
+  ```
+
+  能不使用关联查询的尽量不要使用关联查询；
+
+* 不需要获取全表数据的时候，不要查询全表数据，使用LIMIT来限制数据。
 
 ### ★★★ InnoDB 与 MyISAM 比较。 
 
+![](../.gitbook/assets/image%20%28120%29.png)
+
+![](../.gitbook/assets/2.jpg)
+
+![](../.gitbook/assets/3.jpg)
+
+![](../.gitbook/assets/image%20%28125%29.png)
+
 ### ★★☆ 水平切分与垂直切分。 
+
+**分库分表前的问题**
+
+任何问题都是太大或者太小的问题，我们这里面对的数据量太大的问题。
+
+* 用户请求量太大
+
+  因为单服务器TPS，内存，IO都是有限的。 解决方法：分散请求到多个服务器上； 其实用户请求和执行一个sql查询是本质是一样的，都是请求一个资源，只是用户请求还会经过网关，路由，http服务器等。
+
+* 单库太大
+
+  单个数据库处理能力有限；单库所在服务器上磁盘空间不足；单库上操作的IO瓶颈 解决方法：切分成更多更小的库
+
+* 单表太大
+
+  CRUD都成问题；索引膨胀，查询超时 解决方法：切分成多个数据集更小的表。
+
+**分库分表的方式方法**
+
+一般就是垂直切分和水平切分，这是一种结果集描述的切分方式，是物理空间上的切分。 我们从面临的问题，开始解决，阐述： 首先是用户请求量太大，我们就堆机器搞定（这不是本文重点）。
+
+然后是单个库太大，这时我们要看是因为表多而导致数据多，还是因为单张表里面的数据多。 如果是因为表多而数据多，使用垂直切分，根据业务切分成不同的库。
+
+如果是因为单张表的数据量太大，这时要用水平切分，即把表的数据按某种规则切分成多张表，甚至多个库上的多张表。 **分库分表的顺序应该是先垂直分，后水平分。** 因为垂直分更简单，更符合我们处理现实世界问题的方式。
+
+**垂直拆分**
+
+1. 垂直分表
+
+   也就是“大表拆小表”，基于列字段进行的。一般是表中的字段较多，将不常用的， 数据较大，长度较长（比如text类型字段）的拆分到“扩展表“。 一般是针对那种几百列的大表，也避免查询时，数据量太大造成的“跨页”问题。
+
+2. 垂直分库
+
+   垂直分库针对的是一个系统中的不同业务进行拆分，比如用户User一个库，商品Producet一个库，订单Order一个库。 切分后，要放在多个服务器上，而不是一个服务器上。为什么？ 我们想象一下，一个购物网站对外提供服务，会有用户，商品，订单等的CRUD。没拆分之前， 全部都是落到单一的库上的，这会让数据库的单库处理能力成为瓶颈。按垂直分库后，如果还是放在一个数据库服务器上， 随着用户量增大，这会让单个数据库的处理能力成为瓶颈，还有单个服务器的磁盘空间，内存，tps等非常吃紧。 所以我们要拆分到多个服务器上，这样上面的问题都解决了，以后也不会面对单机资源问题。
+
+   数据库业务层面的拆分，和服务的“治理”，“降级”机制类似，也能对不同业务的数据分别的进行管理，维护，监控，扩展等。 数据库往往最容易成为应用系统的瓶颈，而数据库本身属于“有状态”的，相对于Web和应用服务器来讲，是比较难实现“横向扩展”的。 数据库的连接资源比较宝贵且单机处理能力也有限，在高并发场景下，垂直分库一定程度上能够突破IO、连接数及单机硬件资源的瓶颈。
+
+**水平拆分**
+
+1. 水平分表
+
+   针对数据量巨大的单张表（比如订单表），按照某种规则（RANGE,HASH取模等），切分到多张表里面去。 但是这些表还是在同一个库中，所以库级别的数据库操作还是有IO瓶颈。不建议采用。
+
+2. 水平分库分表
+
+   将单张表的数据切分到多个服务器上去，每个服务器具有相应的库与表，只是表中数据集合不同。 水平分库分表能够有效的缓解单机和单库的性能瓶颈和压力，突破IO、连接数、硬件资源等的瓶颈。
+
+3. 水平分库分表切分规则
+4. 1. RANGE
+
+      从0到10000一个表，10001到20000一个表；
+
+   2. HASH取模 离散化
+
+      一个商场系统，一般都是将用户，订单作为主表，然后将和它们相关的作为附表，这样不会造成跨库事务之类的问题。 取用户id，然后hash取模，分配到不同的数据库上。
+
+   3. 地理区域
+
+      比如按照华东，华南，华北这样来区分业务，七牛云应该就是如此。
+
+   4. 时间
+
+      按照时间切分，就是将6个月前，甚至一年前的数据切出去放到另外的一张表，因为随着时间流逝，这些表的数据 被查询的概率变小，所以没必要和“热数据”放在一起，这个也是“冷热数据分离”。
+
+**分库分表后面临的问题**
+
+* 事务支持
+
+  分库分表后，就成了分布式事务了。如果依赖数据库本身的分布式事务管理功能去执行事务，将付出高昂的性能代价； 如果由应用程序去协助控制，形成程序逻辑上的事务，又会造成编程方面的负担。
+
+* 多库结果集合并（group by，order by）
+* 跨库join
+
+  分库分表后表之间的关联操作将受到限制，我们无法join位于不同分库的表，也无法join分表粒度不同的表， 结果原本一次查询能够完成的业务，可能需要多次查询才能完成。 粗略的解决方法： 全局表：基础数据，所有库都拷贝一份。 字段冗余：这样有些字段就不用join去查询了。 系统层组装：分别查询出所有，然后组装起来，较复杂。
+
+**分库分表方案产品**
+
+目前市面上的分库分表中间件相对较多，其中基于代理方式的有MySQL Proxy和Amoeba， 基于Hibernate框架的是Hibernate Shards，基于jdbc的有当当sharding-jdbc， 基于mybatis的类似maven插件式的有蘑菇街的蘑菇街TSharding， 通过重写spring的ibatis template类的Cobar Client。
+
+还有一些大公司的开源产品：
+
+![](../.gitbook/assets/image%20%28123%29.png)
 
 ### ★★☆ 主从复制原理、作用、实现。 
 
+**一、什么是主从复制**
+
+主从复制，是用来建立一个和主数据库完全一样的数据库环境，称为从数据库，主数据库一般是准实时的业务数据库。在最常用的mysql数据库中，支持单项、异步赋值。在赋值过程中，一个服务器充当主服务器，而另外一台服务器充当从服务器；此时主服务器会将更新信息写入到一个特定的二进制文件中。
+
+并会维护文件的一个索引用来跟踪日志循环。这个日志可以记录并发送到从服务器的更新中去。当一台从服务器连接到主服务器时，从服务器会通知主服务器从服务器的日志文件中读取最后一次成功更新的位置。然后从服务器会接收从哪个时刻起发生的任何更新，然后锁住并等到主服务器通知新的更新。
+
+**二、主从复制的作用**
+
+一是确保数据安全；做数据的热备，作为后备数据库，主数据库服务器故障后，可切换到从数据库继续工作，避免数据的丢失。  
+
+
+二是提升I/O性能；随着日常生产中业务量越来越大,I/O访问频率越来越高，单机无法满足，此时做多库的存储，有效降低磁盘I/O访问的频率，提高了单个设备的I/O性能。  
+
+
+三是读写分离，使数据库能支持更大的并发；在报表中尤其重要。由于部分报表sql语句非常的慢，导致锁表，影响前台服务。如果前台使用master，报表使用slave，那么报表sql将不会造成前台锁，保证了前台速度。
+
+**三、主从复制的原理**
+
+复制分成三步：
+
+1. master将改变记录到二进制日志\(binary log\)中（这些记录叫做二进制日志事件，binary log events）；
+2. slave将master的binary log events拷贝到它的中继日志\(relay log\)；
+3. slave重做中继日志中的事件，将改变反映它自己的数据。
+
+下图描述了这一过程：
+
+![](../.gitbook/assets/image%20%28122%29.png)
+
+该过程的第一部分就是master记录二进制日志。在每个事务更新数据完成之前，master在二日志记录这些改变。MySQL将事务串行的写入二进制日志，即使事务中的语句都是交叉执行的。在事件写入二进制日志完成后，master通知存储引擎提交事务。
+
+下一步就是slave将master的binary log拷贝到它自己的中继日志。首先，slave开始一个工作线程——I/O线程。I/O线程在master上打开一个普通的连接，然后开始binlog dump process。Binlog dump process从master的二进制日志中读取事件，如果已经跟上master，它会睡眠并等待master产生新的事件。I/O线程将这些事件写入中继日志。
+
+SQL slave thread处理该过程的最后一步。SQL线程从中继日志读取事件，更新slave的数据，使其与master中的数据一致。只要该线程与I/O线程保持一致，中继日志通常会位于OS的缓存中，所以中继日志的开销很小。
+
+此外，在master中也有一个工作线程：和其它MySQL的连接一样，slave在master中打开一个连接也会使得master开始一个线程。
+
+**利用主从在达到高可用的同时，也可以通过读写分离提供吞吐量。**
+
+**思考：读写分离对事务是否有影响？**
+
+> 对于写操作包括开启事务和提交或回滚要在一台机器上执行，分散到多台master执行后数据库原生的单机事务就失效了。
+>
+> 对于事务中同时包含读写操作，与事务隔离级别设置有关，如果事务隔离级别为read-uncommitted 或者 read-committed，读写分离没影响，如果隔离级别为repeatable-read、serializable，读写分离就有影响，因为在slave上会看到新数据，而正在事务中的master看不到新数据。
+
 ### ★☆☆ redo、undo、binlog 日志的作用。
+
+
 
 ## Redis
 
 ### ★★☆ 字典和跳跃表原理分析。 
 
+**字典**
+
+Redis整个数据库其实就是一个大的字典
+
+```text
+set msg "hello world"
+```
+
+以上命令实际上就是设置了数据库字典中一个key为msg，value为“hello world”
+
+dict相关结构定义：
+
+```text
+typedef struct dictEntry {
+    void *key;
+    union {
+        void *val;
+        uint64_t u64;
+        int64_t s64;
+    } v;
+    struct dictEntry *next;
+} dictEntry;
+
+typedef struct dictht {
+    dictEntry **table;
+    unsigned long size;
+    unsigned long sizemask;
+    unsigned long used;
+} dictht;
+
+typedef struct dict {
+    dictType *type;
+    void *privdata;
+    dictht ht[2];
+    int rehashidx; /* rehashing not in progress if rehashidx == -1 */
+    int iterators; /* number of iterators currently running */
+} dict;
+```
+
+dictEntry是一个单链表实现，next指向下一个结点。v采用了联合，可以使int64\_t 或者void \* 或者uint64\_t。
+
+dictht即使一个哈希表的实现，简单讲就是一个数组，每个数组上指向一条链表，每添加一对键值对，讲key进行hash运算得到一个值，按一定算法映射到数组中，哈希算法必然存在哈希冲突，对于相同的hash的值，挂在同一个链表上。
+
+```text
+ idx = h & d->ht[table].sizemask;
+ he = d->ht[table].table[idx];
+```
+
+sizemask永远为size-1，因为数组下标从0开始，hash与sizemask与即可计算出数组下标。
+
+size表示数组的大小，used记录已使用结点的数量,rehash时会减少。会用于评估负载因子
+
+注意：这个used统计的只是table数组中的已使用的数量，不会统计链表中的量。
+
+dict里的ht\[2\],适用于rehash的，根据负载因子，判断是否需要rehash，进行hash表扩容，
+
+```text
+if (d->ht[0].used >= d->ht[0].size && (dict_can_resize || d->ht[0].used/d->ht[0].size > dict_force_resize_ratio))
+{
+    return dictExpand(d, d->ht[0].used*2);
+}
+```
+
+rehashidx默认为-1，如果需要rehash，在dictExpand函数里会将它置为0。
+
+```text
+d->ht[1] = n;
+d->rehashidx = 0;
+```
+
+初始的ht是ht\[0\],扩容后将新哈希表设置为 1 号哈希表，将字典的 rehash 标识打开开始对字典进行 rehash。
+
+dictType实际上定义了一些操作特定键值对的函数，其中包括复制值，复制键，计算hash等。
+
+hash表的hash算法选取尤为重要，要避免大量的hash冲突，而且分散随机，不然性能退化很严重，dict的hash算法选取了MurmurHash，这个知道一下就好了。
+
+**渐进式rehash：**
+
+一旦判定需要rehash怎么办？直接rehash吗?redis是单线程的，直接进行rehash，所有的后续请求都会被阻塞到那，redis并没有直接全部rehash，通过rehashidx记录了rehash的数组下标，将整个rehash分散到各个请求中。单步rehash，也支持按时间批量rehash。
+
+```text
+static void _dictRehashStep(dict *d) {
+    if (d->iterators == 0) dictRehash(d,1);
+}
+
+int dictRehashMilliseconds(dict *d, int ms) {
+    long long start = timeInMilliseconds();
+    int rehashes = 0;
+    while(dictRehash(d,100)) {
+        rehashes += 100;
+        if (timeInMilliseconds()-start > ms) break;
+    }
+    return rehashes;
+}
+```
+
+单步rehash会分布到find，get，delete, add中
+
+```text
+dictEntry *dictFind(dict *d, const void *key)
+{
+    if (dictIsRehashing(d)) _dictRehashStep(d);
+}
+
+dictEntry *dictAddRaw(dict *d, void *key)
+{
+    if (dictIsRehashing(d)) _dictRehashStep(d);
+}
+...
+```
+
+注意一点，在进行添加的时候，是需要根据当前是否在rehash，在添加到新ht，不再放旧的。
+
+```text
+ht = dictIsRehashing(d) ? &d->ht[1] : &d->ht[0];
+```
+
+在删除的时候，同样也要做类似的判断，都需要操作。find的时候，实际上只要没有rehash结束，需要在两个ht里都寻找，因为指向的是指针，所以无论哪一个找到都可以返回了。
+
+```text
+if (d->ht[0].used == 0) {
+    zfree(d->ht[0].table);
+    d->ht[0] = d->ht[1];
+    _dictReset(&d->ht[1]);
+    d->rehashidx = -1;
+    return 0;
+}
+```
+
+当rehash结束后，释放掉ht\[0\]原有内容，重新指向ht\[1\],重置rehashidx 为-1。
+
+**跳表**
+
+跳表\(skiplist\)是一种有序数据结构，双链表结构，在每个节点上维护了多个指向后序节点的指针，可以快速访问节点。在Redis中Z开头命令操作的有序集合的实现都是基于zskiplist的。
+
+实现代码：
+
+```c
+typedef struct zskiplistNode {
+    robj *obj;
+    double score;
+    struct zskiplistNode *backward;
+    struct zskiplistLevel {
+        struct zskiplistNode *forward;
+        unsigned int span;
+    } level[];
+} zskiplistNode;
+```
+
+zskiplistNode：
+
+1. 层级：每个节点记录了多个后序节点的指针，一层一个指向，level包含了多个指向，层越多，访问跨度越大，概率访问速度就越快
+2. 前进指针：这个和普通的链表的next等价，指向下一个邻近节点。level\[0\]指向邻近的节点，方便遍历
+3. 跨度：level\[i\].span 表示指向节点和当前的距离，指向null的span为0，可以根据span来判定某个节点的排位
+4. 后退指针：skiplist是个双向链表，可以根据表尾tail从后向前访问，每次只能后退一个节点
+5. 分值和成员：score为double型，是人为设定的一个分值，用于排序，obj则是指向具体的内容，同一个表中，分值可以相同，但对象必须唯一，zslInsert的时候找插入位置会去比较：
+
+```c
+int compareStringObjectsWithFlags(robj *a, robj *b, int flags) {
+    if (a == b) return 0;
+    ...
+    return strcoll(astr,bstr);
+    ...
+}
+```
+
+多个跳跃节点组成跳跃表：
+
+```text
+typedef struct zskiplist {
+    struct zskiplistNode *header, *tail;
+    unsigned long length;
+    int level;
+} zskiplist;
+```
+
+形成类似的结构：![](https://pic4.zhimg.com/v2-f2c3c2c0a4308e3b0ddd2b19a3e3d943_b.jpg)
+
+```text
+zskiplistNode *zslInsert(zskiplist *zsl, double score, robj *obj) {
+    x = zsl->header;
+    for (i = zsl->level-1; i >= 0; i--) {
+        rank[i] = i == (zsl->level-1) ? 0 : rank[i+1];
+        while (x->level[i].forward &&
+            (x->level[i].forward->score < score ||
+                (x->level[i].forward->score == score &&
+                compareStringObjects(x->level[i].forward->obj,obj) < 0))) {
+            rank[i] += x->level[i].span;
+            x = x->level[i].forward;
+        }
+        update[i] = x;
+    }
+```
+
+插入这里有讲究，从head的最高的level往下找，
+
+1.如果还比指向的节点大，则继续查找，此时就是一个单链表查找了
+
+2.比指向节点小，则再低一层查找
+
+整个过程其实在不断的缩小查找区间，update\[\] 记录每层第一个比他大的节点的前一个节点，最终只有两种可能，header和将要插入位置的前一个节点,所以下面初始化会直接指向header。这个思考了很久。
+
+rank\[\]记录了最后一个比他小的节点和当前指向节点的span跨度和，i 层的起始 rank 值为 i+1 层的 rank 值，层数越低越靠前，rank\[0\]则表示最终插入点的最终排位
+
+```text
+    level = zslRandomLevel();
+    if (level > zsl->level) {
+        for (i = zsl->level; i < level; i++) {
+            rank[i] = 0;
+            update[i] = zsl->header;
+            update[i]->level[i].span = zsl->length;
+        }
+        zsl->level = level;
+    }
+```
+
+随机生成一个level层数，实际上为了保证随机性，跳表追求的是概率性平衡 。
+
+如果新节点的层数比表中其他节点的层数都要大，update\[i\]直接指向header，level\[i\]的span直接设置为最大length。更新zsl-&gt;level为最新。
+
+```text
+    x = zslCreateNode(level,score,obj);
+    for (i = 0; i < level; i++) {
+        x->level[i].forward = update[i]->level[i].forward;
+        update[i]->level[i].forward = x;
+        /* update span covered by update[i] as x is inserted here */
+        x->level[i].span = update[i]->level[i].span - (rank[0] - rank[i]);
+        update[i]->level[i].span = (rank[0] - rank[i]) + 1;
+    }
+     /* increment span for untouched levels */
+    for (i = level; i < zsl->level; i++) {
+        update[i]->level[i].span++;
+    }
+
+    x->backward = (update[0] == zsl->header) ? NULL : update[0];
+    if (x->level[0].forward) x->level[0].forward->backward = x;
+    else zsl->tail = x;
+    zsl->length++;
+
+    return x;
+}//end zslInsert
+```
+
+for循环里等同于双向链表的插入，以及更新span。跳表是带头结点的，如果0层为header，则x就是第一个节点，backword设为NULL，不是则指向update\[0\]，如果没有forward则为尾节点，更新zsl的tail，length++。
+
+Redis的实现代码简直是C的典范，没有一行多余代码，就这一个函数，就挺费脑子的，我想《Redis设计和实现》在跳表这一章并没有讲具体的插入，也是因为讲了，还是要费些劲儿理解，不过这书还是一本通俗易懂的书。
+
+写此文耗挺费时间的，当然我的理解也加深了，学习就该脚踏实地，吃透。
+
 ### ★★★ 使用场景。 
+
+作者：lemonrel  
+链接：https://zhuanlan.zhihu.com/p/92024726  
+来源：知乎  
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。  
+  
+
+
+（1）会话缓存（Session Cache）最常用的一种使用Redis的情景是会话缓存（session cache）。用Redis缓存会话比其他存储（如Memcached）的优势在于：Redis提供持久化。当维护一个不是严格要求一致性的缓存时，如果用户的购物车信息全部丢失，大部分人都会不高兴的，现在，他们还会这样吗？
+
+幸运的是，随着 Redis 这些年的改进，很容易找到怎么恰当的使用Redis来缓存会话的文档。甚至广为人知的商业平台Magento也提供Redis的插件。
+
+（2）全页缓存（FPC）
+
+除基本的会话token之外，Redis还提供很简便的FPC平台。回到一致性问题，即使重启了Redis实例，因为有磁盘的持久化，用户也不会看到页面加载速度的下降，这是一个极大改进，类似PHP本地FPC。
+
+再次以Magento为例，Magento提供一个插件来使用Redis作为全页缓存后端。
+
+此外，对WordPress的用户来说，Pantheon有一个非常好的插件 wp-redis，这个插件能帮助你以最快速度加载你曾浏览过的页面。
+
+（3）队列
+
+Reids在内存存储引擎领域的一大优点是提供 list 和 set 操作，这使得Redis能作为一个很好的消息队列平台来使用。Redis作为队列使用的操作，就类似于本地程序语言（如Python）对 list 的 push/pop 操作。
+
+如果你快速的在Google中搜索“Redis queues”，你马上就能找到大量的开源项目，这些项目的目的就是利用Redis创建非常好的后端工具，以满足各种队列需求。例如，Celery有一个后台就是使用Redis作为broker，你可以从这里去查看。【加群】：857565362
+
+（4）排行榜/计数器
+
+Redis在内存中对数字进行递增或递减的操作实现的非常好。集合（Set）和有序集合（Sorted Set）也使得我们在执行这些操作的时候变的非常简单，Redis只是正好提供了这两种数据结构。所以，我们要从排序集合中获取到排名最靠前的10个用户–我们称之为“user\_scores”，我们只需要像下面一样执行即可：
+
+当然，这是假定你是根据你用户的分数做递增的排序。如果你想返回用户及用户的分数，你需要这样执行ZRANGE user\_scores 0 10 WITHSCORES
+
+Agora Games就是一个很好的例子，用Ruby实现的，它的排行榜就是使用Redis来存储数据的，你可以在这里看到。
+
+（5）发布/订阅
+
+最后（但肯定不是最不重要的）是Redis的发布/订阅功能。发布/订阅的使用场景确实非常多。我已看见人们在社交网络连接中使用，还可作为基于发布/订阅的脚本触发器，甚至用Redis的发布/订阅功能来建立聊天系统！（不，这是真的，你可以去核实）。
 
 ### ★★★ 与 Memchached 的比较。 
 
+数据类型。Redis支持多种数据类型，除了k/v类型的数据，同时还提供list，set，hash等数据结构的存储。
+
+存储介质。Redis当物理内存用完时，可以将冷数据交换到磁盘；所以最近有讨论使用SSD代替内存的Redis架构讨论。
+
+过期策略。memcache在set时就指定。Redis可以通过例如expire 设定，例如expire something 1000。
+
+持久化和备份。memcache一般不做持久化；redis可以持久化到磁盘。
+
+![](../.gitbook/assets/image%20%28121%29.png)
+
+![](../.gitbook/assets/image%20%28118%29.png)
+
 ### ★☆☆ 数据淘汰机制。 
 
-### ★★☆ RDB 和 AOF 持久化机制。 
+
+
+**Redis的过期策略**
+
+过期策略通常有以下三种：
+
+* **定时过期**
+
+  每个设置过期时间的key都需要创建一个定时器，到过期时间就会立即清除。该策略可以立即清除过期的数据，对内存很友好；但是会占用大量的CPU资源去处理过期的数据，从而影响缓存的响应时间和吞吐量。
+
+  ```text
+    setex('a', 300, 'aval')
+    setex('b', 600, 'bval')
+  ```
+
+* **惰性过期**
+
+  只有当访问一个key时，才会判断该key是否已过期，过期则清除。该策略可以最大化地节省CPU资源，却对内存非常不友好。极端情况可能出现大量的过期key没有再次被访问，从而不会被清除，占用大量内存。
+
+* **定期过期**
+
+  每隔一定的时间，会扫描一定数量的数据库的expires字典中一定数量的key，并清除其中已过期的key。该策略是前两者的一个折中方案。通过调整定时扫描的时间间隔和每次扫描的限定耗时，可以在不同情况下使得CPU和内存资源达到最优的平衡效果。
+
+  > expires字典会保存所有设置了过期时间的key的过期时间数据，其中，key是指向键空间中的某个键的指针，value是该键的毫秒精度的UNIX时间戳表示的过期时间。键空间是指该Redis集群中保存的所有键。
+
+**Redis中同时使用了惰性过期和定期过期两种过期策略。**
+
+Redis过期删除采用的是定期删除，默认是每100ms检测一次，遇到过期的key则进行删除，这里的检测并不是顺序检测，而是随机检测。那这样会不会有漏网之鱼？显然Redis也考虑到了这一点，当我们去读/写一个已经过期的key时，会触发Redis的惰性删除策略，直接回干掉过期的key
+
+**为什么不用定时删除策略?**
+
+定时删除,用一个定时器来负责监视key,过期则自动删除。虽然内存及时释放，但是十分消耗CPU资源。在大并发请求下，CPU要将时间应用在处理请求，而不是删除key,因此没有采用这一策略.
+
+**定期删除+惰性删除是如何工作的呢?**
+
+定期删除，redis默认每个100ms检查，是否有过期的key,有过期key则删除。需要说明的是，redis不是每个100ms将所有的key检查一次，而是随机抽取进行检查\(如果每隔100ms,全部key进行检查，redis岂不是卡死\)。因此，如果只采用定期删除策略，会导致很多key到时间没有删除。
+
+于是，惰性删除派上用场。也就是说在你获取某个key的时候，redis会检查一下，这个key如果设置了过期时间那么是否过期了？如果过期了此时就会删除。
+
+采用定期删除+惰性删除就没其他问题了么?
+
+不是的，如果定期删除没删除key。然后你也没即时去请求key，也就是说惰性删除也没生效。这样，redis的内存会越来越高。那么就应该采用内存淘汰机制。
+
+**缓存淘汰 eviction**
+
+Redis自身实现了缓存淘汰
+
+Redis的内存淘汰策略是指在Redis的用于缓存的内存不足时，怎么处理需要新写入且需要申请额外空间的数据。
+
+* noeviction：当内存不足以容纳新写入数据时，新写入操作会报错。
+* allkeys-lru：当内存不足以容纳新写入数据时，在键空间中，移除最近最少使用的key。
+* allkeys-random：当内存不足以容纳新写入数据时，在键空间中，随机移除某个key。
+* volatile-lru：当内存不足以容纳新写入数据时，在设置了过期时间的键空间中，移除最近最少使用的key。
+* volatile-random：当内存不足以容纳新写入数据时，在设置了过期时间的键空间中，随机移除某个key。
+* volatile-ttl：当内存不足以容纳新写入数据时，在设置了过期时间的键空间中，有更早过期时间的key优先移除。
+
+**redis 4.x 后支持LFU策略，最少频率使用**
+
+* allkeys-lfu
+* volatile-lfu
+
+**LRU**
+
+LRU（Least recently used，最近最少使用）
+
+LRU算法根据数据的历史访问记录来进行淘汰数据，其核心思想是“如果数据最近被访问过，那么将来被访问的几率也更高”。
+
+基本思路
+
+1. 新数据插入到列表头部；
+2. 每当缓存命中（即缓存数据被访问），则将数据移到列表头部；
+3. 当列表满的时候，将列表尾部的数据丢弃。
+
+**LFU**
+
+LFU（Least Frequently Used 最近最少使用算法）
+
+它是基于“如果一个数据在最近一段时间内使用次数很少，那么在将来一段时间内被使用的可能性也很小”的思路。
+
+![](../.gitbook/assets/image%20%28126%29.png)
+
+**LFU需要定期衰减。**
+
+#### Redis淘汰策略的配置 <a id="redis&#x6DD8;&#x6C70;&#x7B56;&#x7565;&#x7684;&#x914D;&#x7F6E;"></a>
+
+* maxmemory 最大使用内存数量
+* maxmemory-policy noeviction 淘汰策略
+
+### ★★☆ RDB 和 AOF 持久化机制。
+
+redis可以将数据写入到磁盘中，在停机或宕机后，再次启动redis时，将磁盘中的备份数据加载到内存中恢复使用。这是redis的持久化。持久化有如下两种机制。
+
+**RDB 快照持久化**
+
+redis可以将内存中的数据写入磁盘进行持久化。在进行持久化时，redis会创建子进程来执行。
+
+**redis默认开启了快照持久化机制。**
+
+进行快照持久化的时机如下
+
+* 定期触发
+
+  redis的配置文件
+
+  ```text
+    #   save  
+    #
+    #   Will save the DB if both the given number of seconds and the given
+    #   number of write operations against the DB occurred.
+    #
+    #   In the example below the behaviour will be to save:
+    #   after 900 sec (15 min) if at least 1 key changed
+    #   after 300 sec (5 min) if at least 10 keys changed
+    #   after 60 sec if at least 10000 keys changed
+    #
+    #   Note: you can disable saving completely by commenting out all "save" lines.
+    #
+    #   It is also possible to remove all the previously configured save
+    #   points by adding a save directive with a single empty string argument
+    #   like in the following example:
+    #
+    #   save ""
+
+    save 900 1
+    save 300 10
+    save 60 10000
+  ```
+
+* BGSAVE
+
+  执行`BGSAVE`命令，手动触发RDB持久化
+
+* SHUTDOWN
+
+  关闭redis时触发
+
+**AOF 追加文件持久化**
+
+redis可以将执行的所有指令追加记录到文件中持久化存储，这是redis的另一种持久化机制。
+
+**redis默认未开启AOF机制。**
+
+redis可以通过配置如下项开启AOF机制
+
+```text
+appendonly yes  # 是否开启AOF
+appendfilename "appendonly.aof"  # AOF文件
+```
+
+AOF机制记录操作的时机
+
+```text
+# appendfsync always  # 每个操作都写到磁盘中
+appendfsync everysec  # 每秒写一次磁盘，默认
+# appendfsync no  # 由操作系统决定写入磁盘的时机
+```
+
+使用AOF机制的缺点是随着时间的流逝，AOF文件会变得很大。但redis可以压缩AOF文件。
+
+**结合使用**
+
+redis允许我们同时使用两种机制，通常情况下我们会设置AOF机制为everysec 每秒写入，则最坏仅会丢失一秒内的数据。redis可以将数据写入到磁盘中，在停机或宕机后，再次启动redis时，将磁盘中的备份数据加载到内存中恢复使用。这是redis的持久化。持久化有如下两种机制。
+
+**RDB 快照持久化**
+
+redis可以将内存中的数据写入磁盘进行持久化。在进行持久化时，redis会创建子进程来执行。
+
+**redis默认开启了快照持久化机制。**
+
+进行快照持久化的时机如下
+
+* 定期触发
+
+  redis的配置文件
+
+  ```text
+    #   save  
+    #
+    #   Will save the DB if both the given number of seconds and the given
+    #   number of write operations against the DB occurred.
+    #
+    #   In the example below the behaviour will be to save:
+    #   after 900 sec (15 min) if at least 1 key changed
+    #   after 300 sec (5 min) if at least 10 keys changed
+    #   after 60 sec if at least 10000 keys changed
+    #
+    #   Note: you can disable saving completely by commenting out all "save" lines.
+    #
+    #   It is also possible to remove all the previously configured save
+    #   points by adding a save directive with a single empty string argument
+    #   like in the following example:
+    #
+    #   save ""
+
+    save 900 1
+    save 300 10
+    save 60 10000
+  ```
+
+* BGSAVE
+
+  执行`BGSAVE`命令，手动触发RDB持久化
+
+* SHUTDOWN
+
+  关闭redis时触发
+
+**AOF 追加文件持久化**
+
+redis可以将执行的所有指令追加记录到文件中持久化存储，这是redis的另一种持久化机制。
+
+**redis默认未开启AOF机制。**
+
+redis可以通过配置如下项开启AOF机制
+
+```text
+appendonly yes  # 是否开启AOF
+appendfilename "appendonly.aof"  # AOF文件
+```
+
+AOF机制记录操作的时机
+
+```text
+# appendfsync always  # 每个操作都写到磁盘中
+appendfsync everysec  # 每秒写一次磁盘，默认
+# appendfsync no  # 由操作系统决定写入磁盘的时机
+```
+
+使用AOF机制的缺点是随着时间的流逝，AOF文件会变得很大。但redis可以压缩AOF文件。
+
+**结合使用**
+
+redis允许我们同时使用两种机制，通常情况下我们会设置AOF机制为everysec 每秒写入，则最坏仅会丢失一秒内的数据。 
 
 ### ★★☆ 事件驱动模型。 
 
+Redis 是一个事件驱动的内存数据库，服务器需要处理两种类型的事件。
+
+* 文件事件
+* 时间事件
+
+下面就会介绍这两种事件的实现原理。
+
+文件事件
+
+Redis 服务器通过 socket 实现与客户端（或其他redis服务器）的交互,文件事件就是服务器对 socket 操作的抽象。 Redis 服务器，通过监听这些 socket 产生的文件事件并处理这些事件，实现对客户端调用的响应。
+
+Reactor
+
+Redis 基于 Reactor 模式开发了自己的事件处理器。
+
+这里就先展开讲一讲 Reactor 模式。看下图：
+
+![](https://pic1.zhimg.com/v2-fe21b9a959ba877059361c622f2e39d8_b.jpg)
+
+“I/O 多路复用模块”会监听多个 FD ，当这些FD产生，accept，read，write 或 close 的文件事件。会向“文件事件分发器（dispatcher）”传送事件。
+
+文件事件分发器（dispatcher）在收到事件之后，会根据事件的类型将事件分发给对应的 handler。
+
+我们顺着图，从上到下的逐一讲解 Redis 是怎么实现这个 Reactor 模型的。
+
+I/O 多路复用模块
+
+Redis 的 I/O 多路复用模块，其实是封装了操作系统提供的 select，epoll，avport 和 kqueue 这些基础函数。向上层提供了一个统一的接口，屏蔽了底层实现的细节。
+
+一般而言 Redis 都是部署到 Linux 系统上，所以我们就看看使用 Redis 是怎么利用 linux 提供的 epoll 实现I/O 多路复用。
+
+首先看看 epoll 提供的三个方法：
+
+```text
+/*
+ * 创建一个epoll的句柄，size用来告诉内核这个监听的数目一共有多大
+ */
+int epoll_create(int size)；
+
+/*
+ * 可以理解为，增删改 fd 需要监听的事件
+ * epfd 是 epoll_create() 创建的句柄。
+ * op 表示 增删改
+ * epoll_event 表示需要监听的事件，Redis 只用到了可读，可写，错误，挂断 四个状态
+ */
+int epoll_ctl(int epfd, int op, int fd, struct epoll_event *event)；
+
+/*
+ * 可以理解为查询符合条件的事件
+ * epfd 是 epoll_create() 创建的句柄。
+ * epoll_event 用来存放从内核得到事件的集合
+ * maxevents 获取的最大事件数
+ * timeout 等待超时时间
+ */
+int epoll_wait(int epfd, struct epoll_event * events, int maxevents, int timeout);
+```
+
+再看 Redis 对文件事件，封装epoll向上提供的接口：
+
+```text
+/*
+ * 事件状态
+ */
+typedef struct aeApiState {
+
+    // epoll_event 实例描述符
+    int epfd;
+
+    // 事件槽
+    struct epoll_event *events;
+
+} aeApiState;
+
+/*
+ * 创建一个新的 epoll 
+ */
+static int  aeApiCreate(aeEventLoop *eventLoop)
+/*
+ * 调整事件槽的大小
+ */
+static int  aeApiResize(aeEventLoop *eventLoop, int setsize)
+/*
+ * 释放 epoll 实例和事件槽
+ */
+static void aeApiFree(aeEventLoop *eventLoop)
+/*
+ * 关联给定事件到 fd
+ */
+static int  aeApiAddEvent(aeEventLoop *eventLoop, int fd, int mask)
+/*
+ * 从 fd 中删除给定事件
+ */
+static void aeApiDelEvent(aeEventLoop *eventLoop, int fd, int mask)
+/*
+ * 获取可执行事件
+ */
+static int  aeApiPoll(aeEventLoop *eventLoop, struct timeval *tvp)
+```
+
+所以看看这个ae\_peoll.c 如何对 epoll 进行封装的：
+
+* `aeApiCreate()` 是对 `epoll.epoll_create()` 的封装。
+* `aeApiAddEvent()`和`aeApiDelEvent()` 是对 `epoll.epoll_ctl()`的封装。
+* `aeApiPoll()` 是对 `epoll_wait()`的封装。
+
+这样 Redis 的利用 epoll 实现的 I/O 复用器就比较清晰了。
+
+再往上一层次我们需要看看 ea.c 是怎么封装的？
+
+首先需要关注的是事件处理器的数据结构：
+
+```text
+typedef struct aeFileEvent {
+
+    // 监听事件类型掩码，
+    // 值可以是 AE_READABLE 或 AE_WRITABLE ，
+    // 或者 AE_READABLE | AE_WRITABLE
+    int mask; /* one of AE_(READABLE|WRITABLE) */
+
+    // 读事件处理器
+    aeFileProc *rfileProc;
+
+    // 写事件处理器
+    aeFileProc *wfileProc;
+
+    // 多路复用库的私有数据
+    void *clientData;
+
+} aeFileEvent;
+```
+
+`mask` 就是可以理解为事件的类型。
+
+除了使用 ae\_peoll.c 提供的方法外,ae.c 还增加 “增删查” 的几个 API。
+
+* 增:`aeCreateFileEvent`
+* 删:`aeDeleteFileEvent`
+* 查: 查包括两个维度 `aeGetFileEvents` 获取某个 fd 的监听类型和`aeWait`等待某个fd 直到超时或者达到某个状态。
+
+事件分发器（dispatcher）
+
+Redis 的事件分发器 `ae.c/aeProcessEvents` 不但处理文件事件还处理时间事件，所以这里只贴与文件分发相关的出部分代码，dispather 根据 mask 调用不同的事件处理器。
+
+```text
+//从 epoll 中获关注的事件
+    numevents = aeApiPoll(eventLoop, tvp);
+    for (j = 0; j < numevents; j++) {
+        // 从已就绪数组中获取事件
+        aeFileEvent *fe = &eventLoop->events[eventLoop->fired[j].fd];
+
+        int mask = eventLoop->fired[j].mask;
+        int fd = eventLoop->fired[j].fd;
+        int rfired = 0;
+
+        // 读事件
+        if (fe->mask & mask & AE_READABLE) {
+            // rfired 确保读/写事件只能执行其中一个
+            rfired = 1;
+            fe->rfileProc(eventLoop,fd,fe->clientData,mask);
+        }
+        // 写事件
+        if (fe->mask & mask & AE_WRITABLE) {
+            if (!rfired || fe->wfileProc != fe->rfileProc)
+                fe->wfileProc(eventLoop,fd,fe->clientData,mask);
+        }
+
+        processed++;
+    }
+```
+
+可以看到这个分发器，根据 mask 的不同将事件分别分发给了读事件和写事件。
+
+文件事件处理器的类型
+
+Redis 有大量的事件处理器类型，我们就讲解处理一个简单命令涉及到的三个处理器：
+
+* acceptTcpHandler 连接应答处理器，负责处理连接相关的事件，当有client 连接到Redis的时候们就会产生 AE\_READABLE 事件。引发它执行。
+* readQueryFromClinet 命令请求处理器，负责读取通过 sokect 发送来的命令。
+* sendReplyToClient 命令回复处理器，当Redis处理完命令，就会产生 AE\_WRITEABLE 事件，将数据回复给 client。
+
+文件事件实现总结
+
+我们按照开始给出的 Reactor 模型，从上到下讲解了文件事件处理器的实现，下面将会介绍时间时间的实现。
+
+时间事件
+
+Reids 有很多操作需要在给定的时间点进行处理，时间事件就是对这类定时任务的抽象。
+
+先看时间事件的数据结构：
+
+```text
+/* Time event structure
+ *
+ * 时间事件结构
+ */
+typedef struct aeTimeEvent {
+
+    // 时间事件的唯一标识符
+    long long id; /* time event identifier. */
+
+    // 事件的到达时间
+    long when_sec; /* seconds */
+    long when_ms; /* milliseconds */
+
+    // 事件处理函数
+    aeTimeProc *timeProc;
+
+    // 事件释放函数
+    aeEventFinalizerProc *finalizerProc;
+
+    // 多路复用库的私有数据
+    void *clientData;
+
+    // 指向下个时间事件结构，形成链表
+    struct aeTimeEvent *next;
+
+} aeTimeEvent;
+```
+
+看见 `next` 我们就知道这个 aeTimeEvent 是一个链表结构。看图：
+
+![](https://pic3.zhimg.com/v2-d9c775736d0db09e8297a63bf6c8f342_b.jpg)
+
+注意这是一个按照id倒序排列的链表，并没有按照事件顺序排序。
+
+processTimeEvent
+
+Redis 使用这个函数处理所有的时间事件，我们整理一下执行思路：
+
+1. 记录最新一次执行这个函数的时间，用于处理系统时间被修改产生的问题。
+2. 遍历链表找出所有 whensec 和 whenms 小于现在时间的事件。
+3. 执行事件对应的处理函数。
+4. 检查事件类型，如果是周期事件则刷新该事件下一次的执行事件。
+5. 否则从列表中删除事件。
+
+综合调度器（aeProcessEvents）
+
+综合调度器是 Redis 统一处理所有事件的地方。我们梳理一下这个函数的简单逻辑：
+
+```text
+// 1. 获取离当前时间最近的时间事件
+shortest = aeSearchNearestTimer(eventLoop);
+
+// 2. 获取间隔时间
+timeval = shortest - nowTime;
+
+// 如果timeval 小于 0，说明已经有需要执行的时间事件了。
+if(timeval < 0){
+    timeval = 0
+}
+
+// 3. 在 timeval 时间内，取出文件事件。
+numevents = aeApiPoll(eventLoop, timeval);
+
+// 4.根据文件事件的类型指定不同的文件处理器
+if (AE_READABLE) {
+    // 读事件
+    rfileProc(eventLoop,fd,fe->clientData,mask);
+}
+    // 写事件
+if (AE_WRITABLE) {
+    wfileProc(eventLoop,fd,fe->clientData,mask);
+}
+```
+
+以上的伪代码就是整个 Redis 事件处理器的逻辑。
+
+我们可以再看看谁执行了这个 `aeProcessEvents`:
+
+```text
+void aeMain(aeEventLoop *eventLoop) {
+
+    eventLoop->stop = 0;
+
+    while (!eventLoop->stop) {
+
+        // 如果有需要在事件处理前执行的函数，那么运行它
+        if (eventLoop->beforesleep != NULL)
+            eventLoop->beforesleep(eventLoop);
+
+        // 开始处理事件
+        aeProcessEvents(eventLoop, AE_ALL_EVENTS);
+    }
+}
+```
+
+然后我们再看看是谁调用了 `eaMain`:
+
+```text
+int main(int argc, char **argv) {
+    //一些配置和准备
+    ...
+    aeMain(server.el);
+
+    //结束后的回收工作
+    ...
+}
+```
+
+我们在 Redis 的 main 方法中找个了它。
+
+这个时候我们整理出的思路就是:
+
+* Redis 的 main\(\) 方法执行了一些配置和准备以后就调用 `eaMain()` 方法。
+* `eaMain()` while\(true\) 的调用 `aeProcessEvents()`。
+
+所以我们说 Redis 是一个事件驱动的程序，期间我们发现，Redis 没有 fork 过任何线程。所以也可以说 Redis 是一个基于事件驱动的单线程应用。
+
+总结
+
+在后端的面试中 Redis 总是一个或多或少会问到的问题。
+
+读完这篇文章你也许就能回答这几个问题：
+
+* 为什么 Redis 是一个单线程应用？
+* 为什么 Redis 是一个单线程应用，却有如此高的性能？
+
 ### ★☆☆ 主从复制原理。 
+
+主从复制过程大体可以分为3个阶段：连接建立阶段（即准备阶段）、数据同步阶段、命令传播阶段。
+
+在从节点执行 slaveof 命令后，复制过程便开始运作，下面图示大概可以看到，  
+从图中可以看出复制过程大致分为6个过程  
+
+
+![](https://pic1.zhimg.com/v2-15ab2188df03b122bc9d5bee53874494_b.jpg)
+
+主从配置之后的日志记录也可以看出这个流程
+
+1）保存主节点（master）信息。  
+执行 slaveof 后 Redis 会打印如下日志：
+
+![](https://pic1.zhimg.com/v2-ffc514a3de8e1d54c49e2323887694c0_b.png)
+
+2）从节点（slave）内部通过每秒运行的定时任务维护复制相关逻辑，当定时任务发现存在新的主节点后，会尝试与该节点建立网络连接  
+
+
+![](https://pic2.zhimg.com/v2-49e5a86b9ae1ac0aa6814576bf1be5c1_b.jpg)
+
+![](../.gitbook/assets/image%20%28119%29.png)
+
+从节点与主节点建立网络连接
+
+从节点会建立一个 socket 套接字，从节点建立了一个端口为51234的套接字，专门用于接受主节点发送的复制命令。从节点连接成功后打印如下日志：
+
+![](https://pic4.zhimg.com/v2-0278db6dec9a5ba9fdc4ec92c79c9d9b_b.png)
+
+如果从节点无法建立连接，定时任务会无限重试直到连接成功或者执行 slaveof no one 取消复制
+
+关于连接失败，可以在从节点执行 info replication 查看 master\_link\_down\_since\_seconds 指标，它会记录与主节点连接失败的系统时间。从节点连接主节点失败时也会每秒打印如下日志，方便发现问题：
+
+\# Error condition on socket **for** SYNC: {socket\_error\_reason}
+
+3）发送 ping 命令。  
+连接建立成功后从节点发送 ping 请求进行首次通信，ping 请求主要目的如下：  
+·检测主从之间网络套接字是否可用。  
+·检测主节点当前是否可接受处理命令。  
+如果发送 ping 命令后，从节点没有收到主节点的 pong 回复或者超时，比如网络超时或者主节点正在阻塞无法响应命令，从节点会断开复制连接，下次定时任务会发起重连。  
+
+
+![](https://pic2.zhimg.com/v2-8ea529b55295292de2a02e109d0926a5_b.jpg)
+
+![](https://pic3.zhimg.com/v2-bbacb788301fada16c374480ba98abc2_b.jpg)
+
+![](../.gitbook/assets/image%20%28124%29.png)
+
+从节点发送的 ping 命令成功返回，Redis 打印如下日志，并继续后续复制流程：
+
+![](https://pic4.zhimg.com/v2-4189291485c0128eb6003b7827a5d933_b.png)
+
+4）权限验证。如果主节点设置了 requirepass 参数，则需要密码验证，从节点必须配置 masterauth 参数保证与主节点相同的密码才能通过验证；如果验证失败复制将终止，从节点重新发起复制流程。
+
+5）同步数据集。主从复制连接正常通信后，对于首次建立复制的场景，主节点会把持有的数据全部发送给从节点，这部分操作是耗时最长的步骤。
+
+6）命令持续复制。当主节点把当前的数据同步给从节点后，便完成了复制的建立流程。接下来主节点会持续地把写命令发送给从节点，保证主从数据一致性。
 
 ### ★★★ 集群与分布式。 
 
