@@ -1796,7 +1796,7 @@ SQL slave thread处理该过程的最后一步。SQL线程从中继日志读取�
 
 Redis整个数据库其实就是一个大的字典
 
-```text
+```bash
 set msg "hello world"
 ```
 
@@ -1804,7 +1804,7 @@ set msg "hello world"
 
 dict相关结构定义：
 
-```text
+```c
 typedef struct dictEntry {
     void *key;
     union {
@@ -1835,7 +1835,7 @@ dictEntry是一个单链表实现，next指向下一个结点。v采用了联合
 
 dictht即使一个哈希表的实现，简单讲就是一个数组，每个数组上指向一条链表，每添加一对键值对，讲key进行hash运算得到一个值，按一定算法映射到数组中，哈希算法必然存在哈希冲突，对于相同的hash的值，挂在同一个链表上。
 
-```text
+```c
  idx = h & d->ht[table].sizemask;
  he = d->ht[table].table[idx];
 ```
@@ -1848,7 +1848,7 @@ size表示数组的大小，used记录已使用结点的数量,rehash时会减�
 
 dict里的ht\[2\],适用于rehash的，根据负载因子，判断是否需要rehash，进行hash表扩容，
 
-```text
+```c
 if (d->ht[0].used >= d->ht[0].size && (dict_can_resize || d->ht[0].used/d->ht[0].size > dict_force_resize_ratio))
 {
     return dictExpand(d, d->ht[0].used*2);
@@ -1857,7 +1857,7 @@ if (d->ht[0].used >= d->ht[0].size && (dict_can_resize || d->ht[0].used/d->ht[0]
 
 rehashidx默认为-1，如果需要rehash，在dictExpand函数里会将它置为0。
 
-```text
+```c
 d->ht[1] = n;
 d->rehashidx = 0;
 ```
@@ -1872,7 +1872,7 @@ hash表的hash算法选取尤为重要，要避免大量的hash冲突，而且�
 
 一旦判定需要rehash怎么办？直接rehash吗?redis是单线程的，直接进行rehash，所有的后续请求都会被阻塞到那，redis并没有直接全部rehash，通过rehashidx记录了rehash的数组下标，将整个rehash分散到各个请求中。单步rehash，也支持按时间批量rehash。
 
-```text
+```c
 static void _dictRehashStep(dict *d) {
     if (d->iterators == 0) dictRehash(d,1);
 }
@@ -1890,7 +1890,7 @@ int dictRehashMilliseconds(dict *d, int ms) {
 
 单步rehash会分布到find，get，delete, add中
 
-```text
+```c
 dictEntry *dictFind(dict *d, const void *key)
 {
     if (dictIsRehashing(d)) _dictRehashStep(d);
@@ -1905,13 +1905,13 @@ dictEntry *dictAddRaw(dict *d, void *key)
 
 注意一点，在进行添加的时候，是需要根据当前是否在rehash，在添加到新ht，不再放旧的。
 
-```text
+```c
 ht = dictIsRehashing(d) ? &d->ht[1] : &d->ht[0];
 ```
 
 在删除的时候，同样也要做类似的判断，都需要操作。find的时候，实际上只要没有rehash结束，需要在两个ht里都寻找，因为指向的是指针，所以无论哪一个找到都可以返回了。
 
-```text
+```c
 if (d->ht[0].used == 0) {
     zfree(d->ht[0].table);
     d->ht[0] = d->ht[1];
@@ -1960,7 +1960,7 @@ int compareStringObjectsWithFlags(robj *a, robj *b, int flags) {
 
 多个跳跃节点组成跳跃表：
 
-```text
+```c
 typedef struct zskiplist {
     struct zskiplistNode *header, *tail;
     unsigned long length;
@@ -1968,9 +1968,11 @@ typedef struct zskiplist {
 } zskiplist;
 ```
 
-形成类似的结构：![](https://pic4.zhimg.com/v2-f2c3c2c0a4308e3b0ddd2b19a3e3d943_b.jpg)
+形成类似的结构：
 
-```text
+![](https://pic4.zhimg.com/v2-f2c3c2c0a4308e3b0ddd2b19a3e3d943_b.jpg)
+
+```c
 zskiplistNode *zslInsert(zskiplist *zsl, double score, robj *obj) {
     x = zsl->header;
     for (i = zsl->level-1; i >= 0; i--) {
@@ -1996,7 +1998,7 @@ zskiplistNode *zslInsert(zskiplist *zsl, double score, robj *obj) {
 
 rank\[\]记录了最后一个比他小的节点和当前指向节点的span跨度和，i 层的起始 rank 值为 i+1 层的 rank 值，层数越低越靠前，rank\[0\]则表示最终插入点的最终排位
 
-```text
+```c
     level = zslRandomLevel();
     if (level > zsl->level) {
         for (i = zsl->level; i < level; i++) {
@@ -2012,7 +2014,7 @@ rank\[\]记录了最后一个比他小的节点和当前指向节点的span跨�
 
 如果新节点的层数比表中其他节点的层数都要大，update\[i\]直接指向header，level\[i\]的span直接设置为最大length。更新zsl-&gt;level为最新。
 
-```text
+```c
     x = zslCreateNode(level,score,obj);
     for (i = 0; i < level; i++) {
         x->level[i].forward = update[i]->level[i].forward;
@@ -2041,14 +2043,7 @@ Redis的实现代码简直是C的典范，没有一行多余代码，就这一�
 
 写此文耗挺费时间的，当然我的理解也加深了，学习就该脚踏实地，吃透。
 
-### ★★★ 使用场景。 
-
-作者：lemonrel  
-链接：https://zhuanlan.zhihu.com/p/92024726  
-来源：知乎  
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。  
-  
-
+### ★★★ 使用场景。  
 
 （1）会话缓存（Session Cache）最常用的一种使用Redis的情景是会话缓存（session cache）。用Redis缓存会话比其他存储（如Memcached）的优势在于：Redis提供持久化。当维护一个不是严格要求一致性的缓存时，如果用户的购物车信息全部丢失，大部分人都会不高兴的，现在，他们还会这样吗？
 
@@ -2095,8 +2090,6 @@ Agora Games就是一个很好的例子，用Ruby实现的，它的排行榜就�
 ![](../.gitbook/assets/image%20%28118%29.png)
 
 ### ★☆☆ 数据淘汰机制。 
-
-
 
 **Redis的过期策略**
 
