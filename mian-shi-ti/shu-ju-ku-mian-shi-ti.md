@@ -62,10 +62,10 @@ quit/exit/ctrl+d # 退出
 | 约束 | constraint | 介绍 |
 | :--- | :--- | :--- |
 | 主键 | primary key | 物理上的存储的 |
+| 外键约束 | foreign key | 对关系字段进行约束, 关联的表中查询值是否存在 |
 | 非空 | not null | 不许为空 |
 | 唯一 | unique | 不许重复 |
 | 默认 | default | 不填写时使用默认值 |
-| 外键约束 | foreign key | 对关系字段进行约束, 关联的表中查询值是否存在 |
 
 ### sql语句基本使用
 
@@ -73,10 +73,10 @@ quit/exit/ctrl+d # 退出
 
 ```sql
 select now(); # 查看当前时间
+select database(); # 查看当前使用的数据库
 show databases; # 查看所有数据库
 create database 数据库名 charset=utf8; # 创建数据库
 use 数据库名; # 使用数据库
-select database(); # 查看当前使用的数据库
 drop database 数据库名; # 删除数据库
 source areas.sql; # 执行sql文件给areas表导入数据
 ```
@@ -129,7 +129,7 @@ select 列1,列2,... from 表名; # 查询指定列
 select id,name from students;
 
 insert into 表名 values (...) # 全列插入：值的顺序与表结构字段的顺序完全一一对应
-insert into students values(0, 'xx', default, default, '男');
+insert into students values (0, 'xx', default, default, '男');
 
 insert into 表名 values (...),(...)...; # 全列多行插入
 insert into students values(0, '张飞', 55, 1.75, '男'),(0, '关羽', 58, 1.85, '男');
@@ -166,7 +166,7 @@ select * from students where id > 3;
 -- 逻辑运算符：and or not 多个条件结合()
 select * from students where not (age >= 10 and age <= 15);
 -- 模糊查询：like是模糊查询关键字/%表示任意多个任意字符/_表示一个任意字符
-select * from students where name like '黄%' or name like '_靖';
+select * from students where name like '黄%' or name like '_婷';
 -- 范围查询：between .. and .. 表示在一个连续的范围内查询/in 表示在一个非连续的范围内查询
 select * from students where id between 3 and 8;
 select * from students where id in [1, 2, 3, 4];
