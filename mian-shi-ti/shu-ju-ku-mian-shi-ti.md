@@ -65,7 +65,7 @@ quit/exit/ctrl+d # 退出
 | 非空 | not null | 不许为空 |
 | 唯一 | unique | 不许重复 |
 | 默认 | default | 不填写时使用默认值 |
-| 外键约束 | foreign key | 对关系字段进行约束, 关联的表中查询值是否存在, |
+| 外键约束 | foreign key | 对关系字段进行约束, 关联的表中查询值是否存在 |
 
 ### sql语句基本使用
 
