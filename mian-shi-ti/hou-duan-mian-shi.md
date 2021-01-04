@@ -2033,7 +2033,7 @@ LRU算法根据数据的历史访问记录来进行淘汰数据，其核心思�
 
 **LFU**
 
-LFU（Least Frequently Used 最近最不常用）
+LFU（Least Frequently Used 最少频率）
 
 它是基于“如果一个数据在最近一段时间内使用次数很少，那么在将来一段时间内被使用的可能性也很小”的思路。
 
