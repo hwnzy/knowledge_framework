@@ -539,12 +539,10 @@ _如果两者都有，就必须同时验证，并且两者都满足才会返回3
 
 ### ★★★ 长连接与短连接原理以及使用场景，流水线。 
 
+**短连接**
 
-
-**短连接**  
-连接-&gt;传输数据-&gt;关闭连接  
-比如HTTP是无状态的的短链接，浏览器和服务器每进行一次HTTP操作，就建立一次连接，但任务结束就中断连接。  
-具体就是 浏览器client发起并建立TCP连接 -&gt; client发送HttpRequest报文 -&gt; server接收到报文-&gt;server handle并发送HttpResponse报文给前端,发送完毕之后立即调用socket.close方法-&gt;client接收response报文-&gt;client最终会收到server端断开TCP连接的信号-&gt;client 端断开TCP连接，具体就是调用close方法。
+每进行一次操作就建立一次连接，操作结束就中断连接。【连接-&gt;传输数据-&gt;关闭连接】  
+浏览器client发起并建立TCP连接 -&gt; client发送HttpRequest报文 -&gt; server接收到报文-&gt;server handle并发送HttpResponse报文给前端,发送完毕之后立即调用socket.close方法-&gt;client接收response报文-&gt;client最终会收到server端断开TCP连接的信号-&gt;client 端断开TCP连接，具体就是调用close方法。
 
 也可以这样说：短连接是指SOCKET连接后，发送接收完数据后马上断开连接。  
 因为连接后接收了数据就断开了，所以每次数据接受处理不会有联系。 这也是HTTP协议无状态的原因之一。
@@ -571,6 +569,12 @@ TCP连接在发送后将仍然保持打开状态，于是，浏览器可以继�
 http 1.0一般就指短连接，smtp,pop3,telnet这种就可以认为是长连接。一般的网络游戏应用都是长连接
 
 ### ★★★ HTTP 存在的安全性问题，以及 HTTPs 的加密、认证和完整性保护作用。 
+
+HTTPS=HTTP+加密+认证+完整性保护
+
+HTTPS是身披SSL外壳的HTTP。  
+HTTPS只是HTTP的通信接口部分用SSL和TLS协议代替。  
+通常HTTP直接和TCP通信，使用SSL之后变成了先和SSL通信再和TCP通信。
 
 HTTP的缺点
 
@@ -599,12 +603,6 @@ SSL有一种被称为**证书**的手段可以用于确定通信方（服务器�
 
 HTTP协议无法保证通信的报文的完整性。即没有任何办法确认发出的响应/请求和接收到的响应/请求是前后相同的。在传输途中遇中间者拦截并篡改内容的叫**中间人攻击（MITM）**。  
 可用MD5和SHA-1等**散列值校验**的方法以及确认文件的**数字签名方法**（以PGP创建的数字签名为例）来保证报文的完整性，但是当PGP和MD5本身被篡改时，报文的完整性依旧无法保证。
-
-HTTPS=HTTP+加密+认证+完整性保护
-
-HTTPS是身披SSL外壳的HTTP。  
-HTTPS只是HTTP的通信接口部分用SSL和TLS协议代替。  
-通常HTTP直接和TCP通信，使用SSL之后变成了先和SSL通信再和TCP通信。
 
 **HTTPS采用的是公开密钥和共享密钥两者并用的混合加密机制**
 
