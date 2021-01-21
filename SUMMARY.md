@@ -17,6 +17,7 @@
   * [数据库面试题](mian-shi-ti/shu-ju-ku-mian-shi-ti.md)
 * [算法知识](suan-fa-yu-shu-ju-jie-gou.md)
 * [框架知识](kuang-jia-zhi-shi/README.md)
+  * [ORM](kuang-jia-zhi-shi/orm.md)
   * [MySQL索引背后的数据结构及算法原理](kuang-jia-zhi-shi/mysql-suo-yin-bei-hou-de-shu-ju-jie-gou-ji-suan-fa-yuan-li.md)
   * [三次握手](kuang-jia-zhi-shi/san-ci-wo-shou.md)
   * [SQL优化](kuang-jia-zhi-shi/sql-you-hua.md)
