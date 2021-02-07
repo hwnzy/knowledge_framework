@@ -1,6 +1,6 @@
 # Table of contents
 
-* [知识框架](README.md)
+* [笔记本](README.md)
 * [基础知识](basics/README.md)
   * [环境配置](basics/huan-jing-pei-zhi.md)
   * [Python基础](basics/python-ji-chu.md)
