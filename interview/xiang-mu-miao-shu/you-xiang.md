@@ -72,9 +72,7 @@ class LoginRequiredJSONMixin(LoginRequiredMixin):
         return http.JsonResponse({'code': RETCODE.SESSIONERR, 'errmsg': '用户未登录'})
 ```
 
-```python
-handle_no_permission说明：我们只需要改写父类中的处理方式 至于如何判断用户是否登录 在父类中已经判断了
-```
+handle\_no\_permission说明：我们只需要改写父类中的处理方式 至于如何判断用户是否登录 在父类中已经判断了
 
 > `LoginRequiredJSONMixin`的使用
 
@@ -117,7 +115,7 @@ html_message 多媒体邮件正文，可以是html字符串
 
 #### 2. 准备发邮件服务器 <a id="2-&#x51C6;&#x5907;&#x53D1;&#x90AE;&#x4EF6;&#x670D;&#x52A1;&#x5668;"></a>
 
-> **1.点击进入《设置》界面**
+> **1.点击进入《设置》界面** ``
 
 ![](http://lf521.gitee.io/meiduoqiantai/user-center/images/06%E5%87%86%E5%A4%87%E5%8F%91%E9%82%AE%E4%BB%B6%E6%9C%8D%E5%8A%A1%E5%99%A81.png)
 
@@ -161,7 +159,7 @@ EMAIL_FROM = '美多商城<hmmeiduo@163.com>' # 发件人抬头
 
 ![](http://lf521.gitee.io/meiduoqiantai/user-center/images/08%E5%87%86%E5%A4%87%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1.png)
 
-```text
+```python
 # bind：保证task对象会作为第一个参数自动传入
 # name：异步任务别名
 # retry_backoff：异常自动重试的时间间隔 第n次(retry_backoff×2^(n-1))s
@@ -194,7 +192,7 @@ def send_verify_email(self, to_email, verify_url):
 > * 在其中指明celery可以读取的Django配置文件。
 > * 最后记得注册新添加的email的任务
 
-```text
+```python
 # celery启动文件
 from celery import Celery
 
@@ -216,7 +214,7 @@ celery_app.autodiscover_tasks(['celery_tasks.sms', 'celery_tasks.email'])
 
 > **3.调用发送邮件异步任务**
 
-```text
+```python
 # 赋值email字段
 try:
     request.user.email = email
@@ -235,7 +233,7 @@ return http.JsonResponse({'code': RETCODE.OK, 'errmsg': '添加邮箱成功'})
 
 > **4.启动Celery**
 
-```text
+```bash
 $ celery -A celery_tasks.main worker -l info
 ```
 
@@ -247,7 +245,7 @@ $ celery -A celery_tasks.main worker -l info
 
 > **1.定义生成邮箱验证链接方法**
 
-```text
+```python
 def generate_verify_email_url(user):
     """
     生成邮箱验证链接
@@ -270,7 +268,7 @@ EMAIL_VERIFY_URL = 'http://www.meiduo.site:8000/emails/verification/'
 
 > **3.使用邮箱验证链接**
 
-```text
+```python
 verify_url = generate_verify_email_url(request.user)
 send_verify_email.delay(email, verify_url)
 ```
@@ -321,7 +319,7 @@ $ celery -A celery_tasks.main worker -l info -P eventlet -c 1000
 
 #### 2. 验证链接提取用户信息 <a id="2-&#x9A8C;&#x8BC1;&#x94FE;&#x63A5;&#x63D0;&#x53D6;&#x7528;&#x6237;&#x4FE1;&#x606F;"></a>
 
-```text
+```python
 def check_verify_email_token(token):
     """
     验证token并提取user
@@ -348,7 +346,7 @@ def check_verify_email_token(token):
 
 > 验证邮箱的核心：就是将用户的`email_active`字段设置为`True`
 
-```text
+```python
 class VerifyEmailView(View):
     """验证邮箱"""
 
@@ -460,7 +458,7 @@ class VerifyEmailView(View):
 
 > celery\_tasks.main.py
 
-```text
+```python
 # celery启动文件
 from celery import Celery
 
@@ -475,14 +473,14 @@ celery_app = Celery('meiduo')
 
 > celery\_tasks.config.py
 
-```text
+```python
 # 指定消息队列的位置
 broker_url = "redis://127.0.0.1/10"
 ```
 
 > celery\_tasks.main.py
 
-```text
+```python
 # celery启动文件
 from celery import Celery
 
@@ -499,7 +497,7 @@ celery_app.config_from_object('celery_tasks.config')
 
 > **1.定义任务：celery\_tasks.sms.tasks.py**
 
-```text
+```python
 @celery_app.task(name='ccp_send_sms_code')
 def ccp_send_sms_code(mobile, sms_code):
     """
@@ -514,7 +512,7 @@ def ccp_send_sms_code(mobile, sms_code):
 
 > **2.注册任务：celery\_tasks.main.py**
 
-```text
+```python
 # celery启动文件
 from celery import Celery
 
@@ -529,7 +527,7 @@ celery_app.autodiscover_tasks(['celery_tasks.sms'])
 
 #### 4. 启动Celery服务 <a id="4-&#x542F;&#x52A8;celery&#x670D;&#x52A1;"></a>
 
-```text
+```python
 $ cd ~/projects/meiduo_project/meiduo_mall
 $ celery -A celery_tasks.main worker -l info
 ```
