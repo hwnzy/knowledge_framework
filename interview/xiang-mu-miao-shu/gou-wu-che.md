@@ -236,7 +236,7 @@ class CartsView(View):
 
 > **2.添加购物车到Redis**
 
-```text
+```python
 class CartsView(View):
     """购物车管理"""
 
@@ -267,7 +267,7 @@ class CartsView(View):
 
 > **3.添加购物车到cookie**
 
-```text
+```python
 class CartsView(View):
     """购物车管理"""
 
@@ -339,7 +339,7 @@ cart.html
 
 > **4.后端接口定义**
 
-```text
+```python
 class CartsView(View):
     """购物车管理"""
 
@@ -358,7 +358,7 @@ class CartsView(View):
 
 > **1.查询Redis购物车**
 
-```text
+```python
 class CartsView(View):
     """购物车管理"""
 
@@ -387,7 +387,7 @@ class CartsView(View):
 
 > **2.查询cookie购物车**
 
-```text
+```python
 class CartsView(View):
     """购物车管理"""
 
@@ -409,7 +409,7 @@ class CartsView(View):
 
 > **3.查询购物车SKU信息**
 
-```text
+```python
 class CartsView(View):
     """购物车管理"""
 
