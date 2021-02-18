@@ -882,7 +882,7 @@ class CartsSelectAllView(View):
 
 > **2.全选Redis购物车**
 
-```text
+```python
 class CartsSelectAllView(View):
     """全选购物车"""
 
@@ -911,7 +911,7 @@ class CartsSelectAllView(View):
 
 > **3.全选cookie购物车**
 
-```text
+```python
 class CartsSelectAllView(View):
     """全选购物车"""
 
