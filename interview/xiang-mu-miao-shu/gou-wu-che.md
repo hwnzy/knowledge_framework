@@ -68,7 +68,7 @@
 * 思考：如何在字符串中描述一条购物车记录？
 * 结论：**JSON字符串**可以描述复杂结构的字符串数据，可以保证一条购物车记录不用分开存储。
 
-```text
+```python
 {
     "sku_id1":{
         "count":"1",
@@ -173,7 +173,7 @@ b'\x80\x03}q\x00(X\x01\x00\x00\x001q\x01}q\x02(X\x05\x00\x00\x00countq\x03K\nX\x
 
 > **4.后端接口定义**
 
-```text
+```python
 class CartsView(View):
     """购物车管理"""
 
@@ -194,7 +194,7 @@ class CartsView(View):
 
 > **1.接收和校验参数**
 
-```text
+```python
 class CartsView(View):
     """购物车管理"""
 
