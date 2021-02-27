@@ -67,8 +67,6 @@
 
 ## 使用Protobuf通信
 
-
-
 * `ServeHTTP()` 中使用 `proto.Marshal()` 编码 HTTP 响应。
 * `Get()` 中使用 `proto.Unmarshal()` 解码 HTTP 响应。
 
