@@ -1740,7 +1740,7 @@ hash表的hash算法选取尤为重要，要避免大量的hash冲突，而且�
 
 **渐进式rehash：**
 
-一旦判定需要rehash怎么办？直接rehash吗?redis是单线程的，直接进行rehash，所有的后续请求都会被阻塞到那，redis并没有直接全部rehash，通过rehashidx记录了rehash的数组下标，将整个rehash分散到各个请求中。单步rehash，也支持按时间批量rehash。
+一旦判定需要rehash怎么办？直接rehash吗？Redis是单线程的，直接进行rehash，所有的后续请求都会被阻塞到那，redis并没有直接全部rehash，通过rehashidx记录了rehash的数组下标，将整个rehash分散到各个请求中。单步rehash，也支持按时间批量rehash。
 
 ```c
 static void _dictRehashStep(dict *d) {
@@ -1752,7 +1752,7 @@ int dictRehashMilliseconds(dict *d, int ms) {
     int rehashes = 0;
     while(dictRehash(d,100)) {
         rehashes += 100;
-        if (timeInMilliseconds()-start > ms) break;
+        if (timeInMilliseconds()->start_ms) break;
     }
     return rehashes;
 }
