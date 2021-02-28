@@ -1,6 +1,6 @@
 # ORM
 
-第一部分 - 数据类型Fiedl类的定义
+第一部分 - 数据类型Field类的定义
 
 \# 定义Field类，包含两个属性，分别是字段的名称name与类型column\_type
 
