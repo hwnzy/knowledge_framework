@@ -10,17 +10,17 @@ python项目大多使用 多进程+协程
 
 ## 协程底层实现原理
 
-![](../.gitbook/assets/image%20%28143%29.png)
+![](../.gitbook/assets/image%20%28154%29.png)
 
-![](../.gitbook/assets/image%20%28146%29.png)
+![](../.gitbook/assets/image%20%28162%29.png)
 
-![](../.gitbook/assets/image%20%28142%29.png)
+![](../.gitbook/assets/image%20%28151%29.png)
 
-![](../.gitbook/assets/image%20%28141%29.png)
+![](../.gitbook/assets/image%20%28149%29.png)
 
 ## python生成器实现原理
 
 python 2.5 中引入 yield/send 表达式用于实现协程
 
-![](../.gitbook/assets/image%20%28144%29.png)
+![](../.gitbook/assets/image%20%28157%29.png)
 
