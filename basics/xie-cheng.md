@@ -12,7 +12,7 @@ python项目大多使用 多进程+协程
 
 ![](../.gitbook/assets/image%20%28155%29.png)
 
-![](../.gitbook/assets/image%20%28164%29.png)
+![](../.gitbook/assets/image%20%28165%29.png)
 
 ![](../.gitbook/assets/image%20%28152%29.png)
 

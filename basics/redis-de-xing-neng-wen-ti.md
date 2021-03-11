@@ -14,7 +14,7 @@
 
 ![](../.gitbook/assets/image%20%28143%29.png)
 
-![](../.gitbook/assets/image%20%28166%29.png)
+![](../.gitbook/assets/image%20%28167%29.png)
 
 ![](../.gitbook/assets/image%20%28140%29.png)
 
@@ -22,9 +22,9 @@
 
 ![](../.gitbook/assets/image%20%28137%29.png)
 
-![](../.gitbook/assets/image%20%28163%29.png)
+![](../.gitbook/assets/image%20%28164%29.png)
 
-![](../.gitbook/assets/image%20%28165%29.png)
+![](../.gitbook/assets/image%20%28166%29.png)
 
 ![](../.gitbook/assets/image%20%28139%29.png)
 
@@ -34,7 +34,9 @@
 
 ![](../.gitbook/assets/image%20%28141%29.png)
 
-![](../.gitbook/assets/image%20%28168%29.png)
+![](../.gitbook/assets/image%20%28169%29.png)
+
+![](../.gitbook/assets/image%20%28160%29.png)
 
 ## 为什么Redis内存不宜过大
 
@@ -44,9 +46,9 @@
 
 ## Redis阻塞原因
 
-![](../.gitbook/assets/image%20%28162%29.png)
+![](../.gitbook/assets/image%20%28163%29.png)
 
-![](../.gitbook/assets/image%20%28161%29.png)
+![](../.gitbook/assets/image%20%28162%29.png)
 
 ![](../.gitbook/assets/image%20%28157%29.png)
 
@@ -58,5 +60,5 @@
 
 ![](../.gitbook/assets/image%20%28156%29.png)
 
-![](../.gitbook/assets/image%20%28167%29.png)
+![](../.gitbook/assets/image%20%28168%29.png)
 
