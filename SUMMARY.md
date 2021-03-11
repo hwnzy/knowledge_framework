@@ -2,6 +2,7 @@
 
 * [笔记本](README.md)
 * [基础知识](basics/README.md)
+  * [多线程可以同时使用 CPU 的多个核心？](basics/duo-xian-cheng-ke-yi-tong-shi-shi-yong-cpu-de-duo-ge-he-xin.md)
   * [环境配置](basics/huan-jing-pei-zhi.md)
   * [Python基础](basics/python-ji-chu.md)
   * [linux命令](basics/linux-ming-ling.md)
