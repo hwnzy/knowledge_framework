@@ -2,6 +2,7 @@
 
 * [笔记本](README.md)
 * [基础知识](basics/README.md)
+  * [浏览器访问网站的简单过程](basics/liu-lan-qi-fang-wen-wang-zhan-de-jian-dan-guo-cheng.md)
   * [Redis的性能问题](basics/redis-de-xing-neng-wen-ti.md)
   * [redis](basics/redis.md)
   * [协程](basics/xie-cheng.md)

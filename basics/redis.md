@@ -14,5 +14,7 @@
 
 7.[项目](/jump/super-jump/word?word=%E9%A1%B9%E7%9B%AE)里是如何设计索引的，为什么这样设计 
 
-8.数据内容过多，如何分页查询，分库分表如何做 手撕 [leetcode](/jump/super-jump/word?word=leetcode) 31 中间因为网不好，掉线了2次，希望不要被记下小本本
+8.数据内容过多，如何分页查询，分库分表如何做 手
+
+撕 [leetcode](/jump/super-jump/word?word=leetcode) 31 中间因为网不好，掉线了2次，希望不要被记下小本本
 
