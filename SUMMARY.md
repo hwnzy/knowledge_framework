@@ -1,7 +1,7 @@
 # Table of contents
 
 * [笔记本](README.md)
-* [Golang开发](golang-kai-fa/README.md)
+* [开发知识](golang-kai-fa/README.md)
   * [新手可能会踩到的50个坑](golang-kai-fa/xin-shou-ke-neng-hui-cai-dao-de-50-ge-keng.md)
 * [基础知识](basics/README.md)
   * [浏览器访问网站的简单过程](basics/liu-lan-qi-fang-wen-wang-zhan-de-jian-dan-guo-cheng.md)
